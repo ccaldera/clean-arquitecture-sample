@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScalableTeams.HumanResourcesManagement.Application", "ScalableTeams.HumanResourcesManagement.Application\ScalableTeams.HumanResourcesManagement.Application.csproj", "{A3C78EAE-6A35-43F8-AD07-CBFD66361647}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScalableTeams.HumanResourcesManagement.Infrastucture", "ScalableTeams.HumanResourcesManagement.Infrastucture\ScalableTeams.HumanResourcesManagement.Infrastucture.csproj", "{6EB2A584-3C85-4295-9D50-7BA493AB5024}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScalableTeams.HumanResourcesManagement.Persistence", "ScalableTeams.HumanResourcesManagement.Persistence\ScalableTeams.HumanResourcesManagement.Persistence.csproj", "{85970631-AA93-44EB-A774-53A7AD6A9838}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScalableTeams.HumanResourcesManagement.API", "ScalableTeams.HumanResourcesManagement.API\ScalableTeams.HumanResourcesManagement.API.csproj", "{2F6199DA-36D7-45CE-9DE3-D63EC04F0073}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScalableTeams.HumanResourcesManagement.Domain", "ScalableTeams.HumanResourcesManagement.Domain\ScalableTeams.HumanResourcesManagement.Domain.csproj", "{5C69FA66-0AED-46AB-BAC9-E480EB2EA0F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A3C78EAE-6A35-43F8-AD07-CBFD66361647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3C78EAE-6A35-43F8-AD07-CBFD66361647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3C78EAE-6A35-43F8-AD07-CBFD66361647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3C78EAE-6A35-43F8-AD07-CBFD66361647}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EB2A584-3C85-4295-9D50-7BA493AB5024}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB2A584-3C85-4295-9D50-7BA493AB5024}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB2A584-3C85-4295-9D50-7BA493AB5024}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB2A584-3C85-4295-9D50-7BA493AB5024}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85970631-AA93-44EB-A774-53A7AD6A9838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85970631-AA93-44EB-A774-53A7AD6A9838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85970631-AA93-44EB-A774-53A7AD6A9838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85970631-AA93-44EB-A774-53A7AD6A9838}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F6199DA-36D7-45CE-9DE3-D63EC04F0073}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F6199DA-36D7-45CE-9DE3-D63EC04F0073}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F6199DA-36D7-45CE-9DE3-D63EC04F0073}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F6199DA-36D7-45CE-9DE3-D63EC04F0073}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C69FA66-0AED-46AB-BAC9-E480EB2EA0F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C69FA66-0AED-46AB-BAC9-E480EB2EA0F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C69FA66-0AED-46AB-BAC9-E480EB2EA0F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C69FA66-0AED-46AB-BAC9-E480EB2EA0F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1E8D4145-F620-40E4-91FE-0D9E61874868}
+	EndGlobalSection
+EndGlobal
