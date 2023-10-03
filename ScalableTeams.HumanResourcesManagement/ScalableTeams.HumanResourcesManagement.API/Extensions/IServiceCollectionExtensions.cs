@@ -45,25 +45,4 @@ public static class IServiceCollectionExtensions
 
         return services;
     }
-
-    public static IServiceCollection AddValidators(this IServiceCollection services)
-    {
-        var classes = AppDomain
-            .CurrentDomain
-            .GetAssemblies()
-            .SelectMany(s => s.GetTypes())
-            .Where(x => !x.IsInterface)
-            .Where(x => x.GetInterfaces().Any(x => x.IsGenericType && typeof(IValidator<>) == x.GetGenericTypeDefinition()));
-
-        foreach (var @class in classes)
-        {
-            var @interface = @class
-                .GetInterfaces()
-                .First(x => x.IsGenericType && typeof(IValidator<>) == x.GetGenericTypeDefinition());
-
-            services.AddScoped(@interface, @class);
-        }
-
-        return services;
-    }
 }

@@ -3,9 +3,9 @@ using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsReque
 
 namespace ScalableTeams.HumanResourcesManagement.Infrastucture.Features.VacationsRequest;
 
-public class VacationRequestValidatorRules : AbstractValidator<VacationsRequestInput>
+public class VacationRequestValidator : AbstractValidator<VacationsRequestInput>
 {
-    public VacationRequestValidatorRules()
+    public VacationRequestValidator()
     {
         RuleFor(x => x.EmployeeId)
             .NotNull();

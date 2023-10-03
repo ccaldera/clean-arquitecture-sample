@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -9,10 +10,17 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ScalableTeams.HumanResourcesManagement.API.EmployeesEndpoints;
+namespace ScalableTeams.HumanResourcesManagement.API.EmployeesEndpoints.VacationsRequest;
 
 public class VacationsRequestEndpoint : IEndpoint
 {
+    private readonly IValidator<VacationsRequestInput> validator;
+
+    public VacationsRequestEndpoint(IValidator<VacationsRequestInput> validator)
+    {
+        this.validator = validator;
+    }
+
     public void AddRoute(IEndpointRouteBuilder app)
     {
         app.MapPost("api/employees/{employeeId}/requests/daysoff", async (
@@ -21,13 +29,15 @@ public class VacationsRequestEndpoint : IEndpoint
                 [FromServices] VacationsRequestService service,
                 CancellationToken cancellationToken) =>
         {
-            var command = new VacationsRequestInput
+            var input = new VacationsRequestInput
             {
                 EmployeeId = employeeId,
                 Dates = dates
             };
 
-            var result = await service.Execute(command, cancellationToken);
+            validator.ValidateAndThrow(input);
+
+            var result = await service.Execute(input, cancellationToken);
 
             return Results.Ok(result);
         })
@@ -35,5 +45,3 @@ public class VacationsRequestEndpoint : IEndpoint
         .WithTags("EmployeesEndpoints");
     }
 }
-
-
