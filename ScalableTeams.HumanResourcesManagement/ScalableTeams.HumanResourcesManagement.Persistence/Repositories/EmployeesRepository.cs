@@ -4,18 +4,18 @@ using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 
-public class EmployeeRepository : IEmployeeRepository
+public class EmployeesRepository : IEmployeesRepository
 {
-    private readonly HumanResourcesManagementContext context;
+    private readonly HumanResourcesManagementContext dbContext;
 
-    public EmployeeRepository(HumanResourcesManagementContext context)
+    public EmployeesRepository(HumanResourcesManagementContext context)
     {
-        this.context = context;
+        this.dbContext = context;
     }
 
     public async Task<Employee?> GetEmployeeAndManagerByEmployeeId(Guid id)
     {
-        return await context
+        return await dbContext
             .Employees
             .Include(x => x.Manager)
             .FirstOrDefaultAsync(x => x.Id == id);

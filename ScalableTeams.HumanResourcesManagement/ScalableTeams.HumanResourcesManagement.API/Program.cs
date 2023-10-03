@@ -1,11 +1,7 @@
-
-using FluentValidation;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
-using ScalableTeams.HumanResourcesManagement.Application.Common;
 using System;
 
 namespace ScalableTeams.HumanResourcesManagement.API
@@ -19,9 +15,9 @@ namespace ScalableTeams.HumanResourcesManagement.API
             // Add services to the container.
             builder.Services.AddAuthorization();
             builder.Services.AddEndpoints();
-            builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
-            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            builder.Services.AddFeatureServices();
+            builder.Services.AddValidators();
+            //builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

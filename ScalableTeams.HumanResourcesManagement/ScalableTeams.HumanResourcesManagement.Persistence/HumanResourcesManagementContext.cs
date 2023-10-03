@@ -17,6 +17,7 @@ public partial class HumanResourcesManagementContext : DbContext
 
     public virtual DbSet<Employee> Employees { get; set; } = null!;
     public virtual DbSet<Department> Departments { get; set; } = null!;
+    public virtual DbSet<VacationRequest> VacationsRequests { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

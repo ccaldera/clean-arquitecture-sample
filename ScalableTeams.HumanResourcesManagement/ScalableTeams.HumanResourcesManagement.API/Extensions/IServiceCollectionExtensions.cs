@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ScalableTeams.HumanResourcesManagement.API.Common;
+using ScalableTeams.HumanResourcesManagement.Application.Common;
 using System;
 using System.Linq;
 
@@ -19,6 +20,48 @@ public static class IServiceCollectionExtensions
         foreach (var endpoint in endpoints)
         {
             services.AddScoped(typeof(IEndpoint), endpoint);
+        }
+
+        return services;
+    }
+
+    public static IServiceCollection AddFeatureServices(this IServiceCollection services)
+    {
+        var classes = AppDomain
+            .CurrentDomain
+            .GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(x => !x.IsInterface)
+            .Where(x => x.GetInterfaces().Any(x => x.IsGenericType && typeof(IFeatureService<,>) == x.GetGenericTypeDefinition()));
+
+        foreach (var @class in classes)
+        {
+            var @interface = @class
+                .GetInterfaces()
+                .First(x => x.IsGenericType && typeof(IFeatureService<,>) == x.GetGenericTypeDefinition());
+
+            services.AddScoped(@interface, @class);
+        }
+
+        return services;
+    }
+
+    public static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        var classes = AppDomain
+            .CurrentDomain
+            .GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(x => !x.IsInterface)
+            .Where(x => x.GetInterfaces().Any(x => x.IsGenericType && typeof(IValidator<>) == x.GetGenericTypeDefinition()));
+
+        foreach (var @class in classes)
+        {
+            var @interface = @class
+                .GetInterfaces()
+                .First(x => x.IsGenericType && typeof(IValidator<>) == x.GetGenericTypeDefinition());
+
+            services.AddScoped(@interface, @class);
         }
 
         return services;
