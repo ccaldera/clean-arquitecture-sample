@@ -1,8 +1,14 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
+using ScalableTeams.HumanResourcesManagement.API.Middlewares;
+using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
+using ScalableTeams.HumanResourcesManagement.Persistence;
+using ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 using System;
 
 namespace ScalableTeams.HumanResourcesManagement.API
@@ -17,6 +23,14 @@ namespace ScalableTeams.HumanResourcesManagement.API
             builder.Services.AddAuthorization();
             builder.Services.AddEndpoints();
             builder.Services.AddFeatureServices();
+            builder.Services.AddRepositories();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            var connectionString = builder.Configuration.GetConnectionString("HumanResourcesManagementConnectionString")!;
+
+            builder.Services.AddDbContext<HumanResourcesManagementContext>(options =>
+                options.UseSqlServer(connectionString));
+
             builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -39,6 +53,8 @@ namespace ScalableTeams.HumanResourcesManagement.API
             app.MapEndpoints();
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ExceptionHandler>();
 
             app.UseAuthorization();
 

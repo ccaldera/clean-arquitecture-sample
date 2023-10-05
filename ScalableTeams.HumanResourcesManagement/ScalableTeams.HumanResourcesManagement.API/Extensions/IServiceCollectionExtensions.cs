@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ScalableTeams.HumanResourcesManagement.API.Common;
 using ScalableTeams.HumanResourcesManagement.Application.Common;
+using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
 using System;
 using System.Linq;
+using System.Security.Claims;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Extensions;
 
@@ -41,6 +43,27 @@ public static class IServiceCollectionExtensions
                 .First(x => x.IsGenericType && typeof(IFeatureService<,>) == x.GetGenericTypeDefinition());
 
             services.AddScoped(@interface, @class);
+        }
+
+        return services;
+    }
+
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        var repositories = AppDomain
+            .CurrentDomain
+            .GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(t => t.GetInterfaces().Contains(typeof(IRepository)))
+            .Where(t => !t.IsInterface);
+
+        foreach (var repository in repositories)
+        {
+            var @interface = repository
+                .GetInterfaces()
+                .First(x => x != typeof(IRepository) && x.IsAssignableTo(typeof(IRepository)));
+
+            services.AddScoped(@interface, repository);
         }
 
         return services;

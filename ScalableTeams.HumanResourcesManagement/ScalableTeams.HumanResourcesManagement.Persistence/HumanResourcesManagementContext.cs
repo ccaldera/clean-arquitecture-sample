@@ -25,7 +25,7 @@ public partial class HumanResourcesManagementContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema("hrm");
+        modelBuilder.HasDefaultSchema("dbo");
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeTypeConfigurations).Assembly);
 

@@ -5,7 +5,7 @@ using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
 
 namespace ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest;
 
-public class VacationsRequestService : IFeatureService<VacationsRequestInput, OperationResponses>
+public class VacationsRequestService : IFeatureService<VacationsRequestInput, VacationsRequestResult>
 {
     private readonly IEmployeesRepository employeesRepository;
     private readonly IVacationsRequestRepository vacationsRequestRepository;
@@ -18,7 +18,7 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput, Op
         this.vacationsRequestRepository = vacationsRequestRepository;
     }
 
-    public async Task<OperationResponses> Execute(VacationsRequestInput input, CancellationToken cancellationToken)
+    public async Task<VacationsRequestResult> Execute(VacationsRequestInput input, CancellationToken cancellationToken)
     {
         var employee = await employeesRepository.GetEmployeeAndManagerByEmployeeId(input.EmployeeId);
 
@@ -33,6 +33,6 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput, Op
 
         await vacationsRequestRepository.SaveChanges();
 
-        return OperationResponses.Empty;
+        return new VacationsRequestResult();
     }
 }

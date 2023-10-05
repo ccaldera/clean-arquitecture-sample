@@ -23,10 +23,11 @@ public class VacationsRequestEndpoint : IEndpoint
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost("api/employees/{employeeId}/requests/daysoff", async (
+        app.MapPost("api/employees/{employeeId}/requests/vacations", 
+            async (
                 [FromRoute] Guid employeeId,
                 [FromBody] List<DateTime> dates,
-                [FromServices] VacationsRequestService service,
+                [FromServices] IFeatureService<VacationsRequestInput, VacationsRequestResult> service,
                 CancellationToken cancellationToken) =>
         {
             var input = new VacationsRequestInput
@@ -37,11 +38,13 @@ public class VacationsRequestEndpoint : IEndpoint
 
             validator.ValidateAndThrow(input);
 
-            var result = await service.Execute(input, cancellationToken);
+            var result = await service.Execute(
+                input, 
+                cancellationToken);
 
             return Results.Ok(result);
         })
-        .Produces<OperationResponses>()
+        .Produces<VacationsRequestResult>()
         .WithTags("EmployeesEndpoints");
     }
 }

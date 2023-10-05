@@ -37,27 +37,32 @@ public class VacationRequest
 
         if (request.EmployeeId == Guid.Empty)
         {
-            errors.Add(new Error(nameof(EmployeeId), "EmployeeId cannot be empty"));
+            errors.Add(new Error(nameof(EmployeeId), "EmployeeId cannot be empty."));
         }
 
         if (!request.Dates.Any())
         {
-            errors.Add(new Error(nameof(Dates), "The dates list cannot be empty"));
+            errors.Add(new Error(nameof(Dates), "The dates list cannot be empty."));
         }
 
-        if (request.Dates.Any(x => x.Date < DateTime.UtcNow.Date))
+        if (request.Dates.Any(x => x.Date <= DateTime.UtcNow.Date))
         {
-            errors.Add(new Error(nameof(Dates), "Dates must be greater than today"));
+            errors.Add(new Error(nameof(Dates), "Dates must be greater than today."));
         }
 
-        if (request.Dates.Any(x => (DateTime.UtcNow.Date - x.Date).Days < 14))
+        if (request.Dates.Any(x => (x.Date - DateTime.UtcNow.Date).Days < 14))
         {
             errors.Add(new Error(nameof(Dates), "You cannot request vacations for the next 14 days."));
         }
 
-        if (request.Dates.Any(x => (DateTime.UtcNow.Date - x.Date).Days > 120))
+        if (request.Dates.Any(x => (x.Date - DateTime.UtcNow.Date).Days > 365))
         {
-            errors.Add(new Error(nameof(Dates), "You cannot request vacations with a date greater than 120 days"));
+            errors.Add(new Error(nameof(Dates), "You cannot request vacations with a date greater than 120 days."));
+        }
+
+        if (request.Dates.GroupBy(x => x.Date).Any(x => x.Count() > 1))
+        {
+            errors.Add(new Error(nameof(Dates), "There are some duplicated dates in the request."));
         }
 
         if (errors.Any())
