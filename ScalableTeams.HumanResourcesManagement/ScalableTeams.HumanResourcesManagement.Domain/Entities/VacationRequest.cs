@@ -6,15 +6,19 @@ namespace ScalableTeams.HumanResourcesManagement.Domain.Entities;
 
 public class VacationRequest
 {
-    public Guid Id { get; set; }
-    public required Guid EmployeeId { get; set; }
-    public required Employee Employee { get; set; }
-    public DateTime? ManagerReviewDate { get; set; }
-    public DateTime? HrReviewDate { get; set; }
-    public ProcessStatus Status { get; set; }
-    public List<DateTime> Dates { get; set; } = new List<DateTime>();
+    public Guid Id { get; private set; }
+    public Guid EmployeeId { get; private set; }
+    public Employee Employee { get; private set; }
+    public DateTime? ManagerReviewDate { get; private set; }
+    public DateTime? HrReviewDate { get; private set; }
+    public ProcessStatus Status { get; private set; }
+    public List<DateTime> Dates { get; private set; } = new List<DateTime>();
 
-    public static VacationRequest NewRequest(Employee employee, List<DateTime> dates)
+    private VacationRequest()
+    {
+    }
+
+    public static VacationRequest Create(Employee employee, List<DateTime> dates)
     {
         var request = new VacationRequest
         {
