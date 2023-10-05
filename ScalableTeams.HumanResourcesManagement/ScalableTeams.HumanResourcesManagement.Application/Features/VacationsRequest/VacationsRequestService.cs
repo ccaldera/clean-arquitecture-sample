@@ -1,4 +1,5 @@
 ﻿using ScalableTeams.HumanResourcesManagement.Application.Common;
+using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
 using ScalableTeams.HumanResourcesManagement.Domain.Entities;
 using ScalableTeams.HumanResourcesManagement.Domain.Exceptions;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
@@ -27,7 +28,7 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput, Va
             throw new ResourceNotFoundException($"The requested employee id {input.EmployeeId} does not exists");
         }
 
-        var vacationsRequest = VacationRequest.NewRequest(employee, input.Dates);
+        var vacationsRequest = VacationRequest.Create(employee, input.Dates);
 
         await vacationsRequestRepository.Insert(vacationsRequest);
 

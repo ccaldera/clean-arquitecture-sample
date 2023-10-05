@@ -1,4 +1,4 @@
-﻿namespace ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest;
+﻿namespace ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
 
 public class VacationsRequestInput
 {

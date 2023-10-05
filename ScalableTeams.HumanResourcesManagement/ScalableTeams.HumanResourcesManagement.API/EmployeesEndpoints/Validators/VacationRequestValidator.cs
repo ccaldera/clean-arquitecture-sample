@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
 using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest;
+using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
 using System;
 using System.Linq;
 
-namespace ScalableTeams.HumanResourcesManagement.Infrastucture.Features.VacationsRequest;
+namespace ScalableTeams.HumanResourcesManagement.API.EmployeesEndpoints.Validators;
 
 public class VacationRequestValidator : AbstractValidator<VacationsRequestInput>
 {
