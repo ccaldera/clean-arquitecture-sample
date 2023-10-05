@@ -90,7 +90,7 @@ public class VacationRequest
     {
         if (Employee.ManagerId != manager.Id)
         {
-            throw new BusinessLogicException("Only the employee's direct manager can approve this request");
+            throw new BusinessLogicException("Only the employee's direct manager can reject this request");
         }
 
         ManagerReviewDate = DateTime.UtcNow;

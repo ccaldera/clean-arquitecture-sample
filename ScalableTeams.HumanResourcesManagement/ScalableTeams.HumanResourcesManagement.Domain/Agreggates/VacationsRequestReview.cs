@@ -4,7 +4,7 @@ namespace ScalableTeams.HumanResourcesManagement.Domain.Agreggates;
 
 public class VacationsRequestReview
 {
-    public Guid Id { get; set; }
+    public Guid VacationRequestId { get; set; }
     public required Guid EmployeeId { get; set; }
     public required Guid? ManagerId { get; set; }
     public required string EmployeeName { get; set; }

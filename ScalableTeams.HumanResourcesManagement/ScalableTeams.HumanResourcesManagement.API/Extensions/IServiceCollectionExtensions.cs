@@ -4,7 +4,6 @@ using ScalableTeams.HumanResourcesManagement.Application.Common;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
 using System;
 using System.Linq;
-using System.Security.Claims;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Extensions;
 
@@ -29,20 +28,20 @@ public static class IServiceCollectionExtensions
 
     public static IServiceCollection AddFeatureServices(this IServiceCollection services)
     {
-        var classes = AppDomain
+        var features = AppDomain
             .CurrentDomain
             .GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(x => !x.IsInterface)
             .Where(x => x.GetInterfaces().Any(x => x.IsGenericType && typeof(IFeatureService<,>) == x.GetGenericTypeDefinition()));
 
-        foreach (var @class in classes)
+        foreach (var feature in features)
         {
-            var @interface = @class
+            var @interface = feature
                 .GetInterfaces()
                 .First(x => x.IsGenericType && typeof(IFeatureService<,>) == x.GetGenericTypeDefinition());
 
-            services.AddScoped(@interface, @class);
+            services.AddScoped(@interface, feature);
         }
 
         return services;

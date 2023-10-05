@@ -21,7 +21,7 @@ public class VacationsRequestRepository : IVacationsRequestRepository
             .Include(x => x.Employee)
             .Select(x => new VacationsRequestReview
             {
-                Id = x.Id,
+                VacationRequestId = x.Id,
                 ManagerId = x.Employee.ManagerId,
                 EmployeeId = x.EmployeeId,
                 EmployeeLastName = x.Employee.LastName,
