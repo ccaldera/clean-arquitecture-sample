@@ -1,0 +1,469 @@
+{
+	"info": {
+		"_postman_id": "240ae7d1-3737-45a7-9aaf-20ab9aed39e6",
+		"name": "ScalableTeams.HumanResourcesManagement.IntegrationTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Employee Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code should be 200\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should contains token\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.token).to.not.be.undefined;\r",
+							"    pm.globals.set(\"token\", \"Bearer \" + json.token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"juan.perez@scalableteams.com\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverUrl}}/api/get-token",
+					"host": [
+						"{{serverUrl}}"
+					],
+					"path": [
+						"api",
+						"get-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Employee can request vacations",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code should be 200\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  \"{{vacationsTime}}\"\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverUrl}}/api/employees/requests/vacations",
+					"host": [
+						"{{serverUrl}}"
+					],
+					"path": [
+						"api",
+						"employees",
+						"requests",
+						"vacations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manager Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code should be 200\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should contains token\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.token).to.not.be.undefined;\r",
+							"    pm.globals.set(\"token\", \"Bearer \" + json.token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"christian.caldera@scalableteams.com\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverUrl}}/api/get-token",
+					"host": [
+						"{{serverUrl}}"
+					],
+					"path": [
+						"api",
+						"get-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manager review pending requets",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code should be 200\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should contains requests\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.requests).to.not.be.undefined;\r",
+							"    pm.expect(json.requests[0].vacationRequestId).to.not.be.undefined;\r",
+							"    pm.globals.set(\"vacationRequestId\", json.requests[0].vacationRequestId);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  \"{{vacationsTime}}\"\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverUrl}}/api/managers/pending-reviews/vacations",
+					"host": [
+						"{{serverUrl}}"
+					],
+					"path": [
+						"api",
+						"managers",
+						"pending-reviews",
+						"vacations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manager approves request",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code should be 200\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"ManagerApproves\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverUrl}}/api/managers/pending-reviews/vacations/{{vacationRequestId}}",
+					"host": [
+						"{{serverUrl}}"
+					],
+					"path": [
+						"api",
+						"managers",
+						"pending-reviews",
+						"vacations",
+						"{{vacationRequestId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HR Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code should be 200\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should contains token\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.token).to.not.be.undefined;\r",
+							"    pm.globals.set(\"token\", \"Bearer \" + json.token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"fanny@scalableteams.com\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverUrl}}/api/get-token",
+					"host": [
+						"{{serverUrl}}"
+					],
+					"path": [
+						"api",
+						"get-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HR review pending requets",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code should be 200\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should contains requests\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.requests).to.not.be.undefined;\r",
+							"    pm.expect(json.requests[0].vacationRequestId).to.not.be.undefined;\r",
+							"    pm.globals.set(\"vacationRequestId\", json.requests[0].vacationRequestId);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  \"{{vacationsTime}}\"\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverUrl}}/api/hr/pending-reviews/vacations",
+					"host": [
+						"{{serverUrl}}"
+					],
+					"path": [
+						"api",
+						"hr",
+						"pending-reviews",
+						"vacations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HR approves request",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response code should be 200\", function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"HrApproves\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverUrl}}/api/hr/pending-reviews/vacations/{{vacationRequestId}}",
+					"host": [
+						"{{serverUrl}}"
+					],
+					"path": [
+						"api",
+						"hr",
+						"pending-reviews",
+						"vacations",
+						"{{vacationRequestId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
