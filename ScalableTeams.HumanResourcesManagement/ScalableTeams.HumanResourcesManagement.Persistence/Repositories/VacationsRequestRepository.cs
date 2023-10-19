@@ -14,6 +14,11 @@ public class VacationsRequestRepository : IVacationsRequestRepository
         this.dbContext = context;
     }
 
+    public async Task<VacationRequest?> Get(Guid id)
+    {
+        return await dbContext.VacationsRequests.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public IEnumerable<VacationsRequestReview> GetAllVacationsRequests()
     {
         return dbContext

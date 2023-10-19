@@ -24,12 +24,8 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput>
 
     public async Task Execute(VacationsRequestInput input, CancellationToken cancellationToken)
     {
-        var employee = await employeesRepository.GetEmployeeAndManagerByEmployeeId(input.EmployeeId);
-
-        if (employee is null)
-        {
-            throw new ResourceNotFoundException($"The requested employee id {input.EmployeeId} does not exists");
-        }
+        var employee = await employeesRepository.Get(input.EmployeeId)
+            ?? throw new ResourceNotFoundException($"The requested employee id {input.EmployeeId} does not exists");
 
         var vacationsRequest = new VacationRequest(employee, input.Dates);
 

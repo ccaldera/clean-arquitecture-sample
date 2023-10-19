@@ -13,11 +13,10 @@ public class EmployeesRepository : IEmployeesRepository
         this.dbContext = context;
     }
 
-    public async Task<Employee?> GetEmployeeAndManagerByEmployeeId(Guid id)
+    public async Task<Employee?> Get(Guid id)
     {
         return await dbContext
             .Employees
-            .Include(x => x.Manager)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

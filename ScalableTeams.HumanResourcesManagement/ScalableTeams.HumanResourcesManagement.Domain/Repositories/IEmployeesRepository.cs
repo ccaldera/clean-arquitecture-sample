@@ -4,5 +4,5 @@ namespace ScalableTeams.HumanResourcesManagement.Domain.Repositories;
 
 public interface IEmployeesRepository : IRepository
 {
-    Task<Employee?> GetEmployeeAndManagerByEmployeeId(Guid id);
+    Task<Employee?> Get(Guid id);
 }
