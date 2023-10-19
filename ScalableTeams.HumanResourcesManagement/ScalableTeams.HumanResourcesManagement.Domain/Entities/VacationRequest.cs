@@ -43,13 +43,13 @@ public class VacationRequest
         Status = ProcessStatus.ManagerRejects;
     }
 
-    private void HrApproves()
+    public void HrApproves()
     {
         HrReviewDate = DateTime.UtcNow;
         Status = ProcessStatus.HrApproves;
     }
 
-    private void HrRejects()
+    public void HrRejects()
     {
         HrReviewDate = DateTime.UtcNow;
         Status = ProcessStatus.HrRejects;

@@ -41,6 +41,6 @@ public class VacationsRequestEndpoint : IEndpoint
 
             return Results.Ok();
         })
-        .WithTags("EmployeesEndpoints");
+        .WithTags("Employees Endpoints");
     }
 }

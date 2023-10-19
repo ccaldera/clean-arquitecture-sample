@@ -9,29 +9,29 @@ using ScalableTeams.HumanResourcesManagement.Domain.Enums;
 using System;
 using System.Threading;
 
-namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.ManagersEndpoints;
+namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.HumanResourcesEndpoints;
 
-public class ManagerReviewRequestEndpoint : IEndpoint
+public class HrReviewRequestEndpoint : IEndpoint
 {
-    private readonly IValidator<ManagerReviewRequest> validator;
+    private readonly IValidator<HrReviewRequest> validator;
 
-    public ManagerReviewRequestEndpoint(IValidator<ManagerReviewRequest> validator)
+    public HrReviewRequestEndpoint(IValidator<HrReviewRequest> validator)
     {
         this.validator = validator;
     }
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost("api/managers/{managerId}/pending-reviews/vacations/{vacationsRequestId}",
+        app.MapPost("api/hr/{hrEmployeeId}/pending-reviews/vacations/{vacationsRequestId}",
             async (
-                [FromRoute] Guid managerId,
+                [FromRoute] Guid hrEmployeeId,
                 [FromRoute] Guid vacationsRequestId,
-                [FromServices] IFeatureService<ManagerReviewRequest> service,
+                [FromServices] IFeatureService<HrReviewRequest> service,
                 [FromBody] ProcessStatus status,
                 CancellationToken cancellationToken) =>
             {
-                var input = new ManagerReviewRequest
+                var input = new HrReviewRequest
                 {
-                    ReviewerId = managerId,
+                    HrEmployeeId = hrEmployeeId,
                     VacationRequestId = vacationsRequestId,
                     NewStatus = status,
                 };
@@ -42,6 +42,6 @@ public class ManagerReviewRequestEndpoint : IEndpoint
 
                 return Results.Ok();
             })
-        .WithTags("Managers Endpoints");
+        .WithTags("Human Resources Endpoints");
     }
 }

@@ -40,6 +40,6 @@ public class GetAllVacationsRequestsEndpoint : IEndpoint
             return Results.Ok(result);
         })
         .Produces<GetAllActiveVacationsRequestResult>()
-        .WithTags("ManagersEndpoints");
+        .WithTags("Managers Endpoints");
     }
 }
