@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ScalableTeams.HumanResourcesManagement.API.Common.Models;
+namespace ScalableTeams.HumanResourcesManagement.API.Models;
 
 public class ValidationErrorResponse : ErrorResponse
 {

@@ -4,7 +4,7 @@ using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsReque
 using System;
 using System.Linq;
 
-namespace ScalableTeams.HumanResourcesManagement.API.EmployeesEndpoints.Validators;
+namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.EmployeesEndpoints.Validators;
 
 public class VacationRequestValidator : AbstractValidator<VacationsRequestInput>
 {

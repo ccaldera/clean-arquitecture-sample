@@ -1,21 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using ScalableTeams.HumanResourcesManagement.API.Models;
 using ScalableTeams.HumanResourcesManagement.Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Authentication;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System;
-using FluentValidation;
-using ScalableTeams.HumanResourcesManagement.API.Common.Models;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Middlewares;
 
 public class ExceptionHandler
 {
-    private readonly RequestDelegate _next;
+    private readonly RequestDelegate next;
 
-    private static readonly Dictionary<Type, HttpStatusCode> s_codes = new()
+    private static readonly Dictionary<Type, HttpStatusCode> codes = new()
     {
         { typeof(ResourceNotFoundException), HttpStatusCode.NotFound },
         { typeof(BusinessLogicException), HttpStatusCode.BadRequest },
@@ -24,14 +24,14 @@ public class ExceptionHandler
 
     public ExceptionHandler(RequestDelegate next)
     {
-        _next = next;
+        this.next = next;
     }
 
     public async Task InvokeAsync(HttpContext httpContext)
     {
         try
         {
-            await _next(httpContext);
+            await next(httpContext);
         }
         catch (ValidationException ex)
         {
@@ -41,7 +41,7 @@ public class ExceptionHandler
         {
             await HandleBusinessLogicExceptionsAsync(httpContext, ex);
         }
-        catch (Exception ex) when (s_codes.ContainsKey(ex.GetType()))
+        catch (Exception ex) when (codes.ContainsKey(ex.GetType()))
         {
             await HandleApplicationExceptionsAsync(httpContext, ex);
         }
@@ -65,7 +65,7 @@ public class ExceptionHandler
 
     private static async Task HandleApplicationExceptionsAsync(HttpContext context, Exception ex)
     {
-        HttpStatusCode statusCode = s_codes.GetValueOrDefault(ex.GetType());
+        HttpStatusCode statusCode = codes.GetValueOrDefault(ex.GetType());
 
         var response = new ErrorResponse(ex.Message);
         var content = JsonSerializer.Serialize(response);

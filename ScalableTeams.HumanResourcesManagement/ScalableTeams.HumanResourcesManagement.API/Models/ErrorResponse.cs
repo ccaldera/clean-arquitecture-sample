@@ -1,4 +1,4 @@
-﻿namespace ScalableTeams.HumanResourcesManagement.API.Common.Models;
+﻿namespace ScalableTeams.HumanResourcesManagement.API.Models;
 
 public class ErrorResponse
 {

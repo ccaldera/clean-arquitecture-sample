@@ -1,5 +1,4 @@
-﻿using ScalableTeams.HumanResourcesManagement.Application.Common;
-using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
+﻿using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
 using ScalableTeams.HumanResourcesManagement.Domain.Enums;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
 

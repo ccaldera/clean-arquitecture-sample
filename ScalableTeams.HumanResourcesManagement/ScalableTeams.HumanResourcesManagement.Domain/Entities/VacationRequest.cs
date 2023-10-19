@@ -1,6 +1,4 @@
 ﻿using ScalableTeams.HumanResourcesManagement.Domain.Enums;
-using ScalableTeams.HumanResourcesManagement.Domain.Exceptions;
-using ScalableTeams.HumanResourcesManagement.Domain.ValueObjects.Common;
 
 namespace ScalableTeams.HumanResourcesManagement.Domain.Entities;
 
@@ -8,7 +6,7 @@ public class VacationRequest
 {
     public Guid Id { get; private set; }
     public Guid EmployeeId { get; private set; }
-    public Employee Employee { get; private set; }
+    public Employee Employee { get; private set; } = default!;
     public DateTime? ManagerReviewDate { get; private set; }
     public DateTime? HrReviewDate { get; private set; }
     public ProcessStatus Status { get; private set; }
@@ -18,81 +16,29 @@ public class VacationRequest
     {
     }
 
-    public static VacationRequest Create(Employee employee, List<DateTime> dates)
+    public VacationRequest(Employee? employee, List<DateTime> dates)
     {
-        var request = new VacationRequest
-        {
-            Id = Guid.NewGuid(),
-            Employee = employee,
-            EmployeeId = employee.Id,
-            Dates = dates
-        };
-        
-        ValidateRequest(request);
+        Employee = employee 
+            ?? throw new ArgumentNullException(nameof(employee));
 
-        request.Status = ProcessStatus.CreatedByEmployee;
+        Dates = dates 
+            ?? throw new ArgumentNullException(nameof(dates));
 
-        return request;
+        Id = Guid.NewGuid();
+        Employee = employee;
+        EmployeeId = employee.Id;
+        Dates = dates;
+        Status = ProcessStatus.CreatedByEmployee;
     }
 
-    private static void ValidateRequest(VacationRequest request)
+    public void ManagerApproves()
     {
-        var errors = new List<Error>();
-
-        if (request.EmployeeId == Guid.Empty)
-        {
-            errors.Add(new Error(nameof(EmployeeId), "EmployeeId cannot be empty."));
-        }
-
-        if (!request.Dates.Any())
-        {
-            errors.Add(new Error(nameof(Dates), "The dates list cannot be empty."));
-        }
-
-        if (request.Dates.Any(x => x.Date <= DateTime.UtcNow.Date))
-        {
-            errors.Add(new Error(nameof(Dates), "Dates must be greater than today."));
-        }
-
-        if (request.Dates.Any(x => (x.Date - DateTime.UtcNow.Date).Days < 14))
-        {
-            errors.Add(new Error(nameof(Dates), "You cannot request vacations for the next 14 days."));
-        }
-
-        if (request.Dates.Any(x => (x.Date - DateTime.UtcNow.Date).Days > 365))
-        {
-            errors.Add(new Error(nameof(Dates), "You cannot request vacations with a date greater than 120 days."));
-        }
-
-        if (request.Dates.GroupBy(x => x.Date).Any(x => x.Count() > 1))
-        {
-            errors.Add(new Error(nameof(Dates), "There are some duplicated dates in the request."));
-        }
-
-        if (errors.Any())
-        {
-            throw new BusinessLogicExceptions(errors);
-        }
-    }
-
-    public void ManagerApproves(Employee manager)
-    {
-        if(Employee.ManagerId != manager.Id)
-        {
-            throw new BusinessLogicException("Only the employee's direct manager can approve this request");
-        }
-
         ManagerReviewDate = DateTime.UtcNow;
         Status = ProcessStatus.ManagerApproves;
     }
 
-    public void ManagerRejects(Employee manager)
+    public void ManagerRejects()
     {
-        if (Employee.ManagerId != manager.Id)
-        {
-            throw new BusinessLogicException("Only the employee's direct manager can reject this request");
-        }
-
         ManagerReviewDate = DateTime.UtcNow;
         Status = ProcessStatus.ManagerRejects;
     }

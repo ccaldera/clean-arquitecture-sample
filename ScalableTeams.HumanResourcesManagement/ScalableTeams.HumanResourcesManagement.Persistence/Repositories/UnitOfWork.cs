@@ -16,7 +16,7 @@ public class UnitOfWork : IUnitOfWork
         this.dbContext = dbContext;
     }
 
-    public IEmployeesRepository EmployeesRepository 
+    public IEmployeesRepository EmployeesRepository
     {
         get
         {

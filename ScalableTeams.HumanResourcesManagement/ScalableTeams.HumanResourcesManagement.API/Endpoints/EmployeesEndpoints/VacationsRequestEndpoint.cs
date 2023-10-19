@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using ScalableTeams.HumanResourcesManagement.API.Common;
-using ScalableTeams.HumanResourcesManagement.Application.Common;
+using ScalableTeams.HumanResourcesManagement.Application.Features;
 using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ScalableTeams.HumanResourcesManagement.API.EmployeesEndpoints;
+namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.EmployeesEndpoints;
 
 public class VacationsRequestEndpoint : IEndpoint
 {
@@ -27,7 +26,7 @@ public class VacationsRequestEndpoint : IEndpoint
             async (
                 [FromRoute] Guid employeeId,
                 [FromBody] List<DateTime> dates,
-                [FromServices] IFeatureService<VacationsRequestInput, VacationsRequestResult> service,
+                [FromServices] IFeatureService<VacationsRequestInput> service,
                 CancellationToken cancellationToken) =>
         {
             var input = new VacationsRequestInput
@@ -38,13 +37,10 @@ public class VacationsRequestEndpoint : IEndpoint
 
             validator.ValidateAndThrow(input);
 
-            var result = await service.Execute(
-                input,
-                cancellationToken);
+            await service.Execute(input, cancellationToken);
 
-            return Results.Ok(result);
+            return Results.Ok();
         })
-        .Produces<VacationsRequestResult>()
         .WithTags("EmployeesEndpoints");
     }
 }

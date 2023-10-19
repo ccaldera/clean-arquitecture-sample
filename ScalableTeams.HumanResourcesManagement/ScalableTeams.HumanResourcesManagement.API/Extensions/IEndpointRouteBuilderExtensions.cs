@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using ScalableTeams.HumanResourcesManagement.API.Common;
+using ScalableTeams.HumanResourcesManagement.API.Endpoints;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Extensions;
 

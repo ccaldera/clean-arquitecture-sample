@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using ScalableTeams.HumanResourcesManagement.API.Common;
-using ScalableTeams.HumanResourcesManagement.Application.Common;
+using ScalableTeams.HumanResourcesManagement.Application.Features;
 using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
 using System;
 using System.Threading;
 
-namespace ScalableTeams.HumanResourcesManagement.API.ManagersEndpoints;
+namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.ManagersEndpoints;
 
 public class GetAllVacationsRequestsEndpoint : IEndpoint
 {

@@ -24,7 +24,7 @@ namespace ScalableTeams.HumanResourcesManagement.API
             builder.Services.AddEndpoints();
             builder.Services.AddFeatureServices();
             builder.Services.AddRepositories();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddRuleValidators();
 
             var connectionString = builder.Configuration.GetConnectionString("HumanResourcesManagementConnectionString")!;
 

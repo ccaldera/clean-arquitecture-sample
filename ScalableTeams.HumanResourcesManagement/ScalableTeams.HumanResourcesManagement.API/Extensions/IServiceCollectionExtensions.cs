@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ScalableTeams.HumanResourcesManagement.API.Common;
-using ScalableTeams.HumanResourcesManagement.Application.Common;
+using ScalableTeams.HumanResourcesManagement.API.Endpoints;
+using ScalableTeams.HumanResourcesManagement.Application.Features;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
+using ScalableTeams.HumanResourcesManagement.Domain.Rules;
+using ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 using System;
 using System.Linq;
 
@@ -28,18 +30,32 @@ public static class IServiceCollectionExtensions
 
     public static IServiceCollection AddFeatureServices(this IServiceCollection services)
     {
-        var features = AppDomain
+        var types = AppDomain
             .CurrentDomain
             .GetAssemblies()
             .SelectMany(s => s.GetTypes())
-            .Where(x => !x.IsInterface)
+            .Where(x => !x.IsInterface);
+
+        var inputOutputRequest = types
             .Where(x => x.GetInterfaces().Any(x => x.IsGenericType && typeof(IFeatureService<,>) == x.GetGenericTypeDefinition()));
 
-        foreach (var feature in features)
+        foreach (var feature in inputOutputRequest)
         {
             var @interface = feature
                 .GetInterfaces()
                 .First(x => x.IsGenericType && typeof(IFeatureService<,>) == x.GetGenericTypeDefinition());
+
+            services.AddScoped(@interface, feature);
+        }
+
+        var inputOnlyRequest = types
+            .Where(x => x.GetInterfaces().Any(x => x.IsGenericType && typeof(IFeatureService<>) == x.GetGenericTypeDefinition()));
+
+        foreach (var feature in inputOnlyRequest)
+        {
+            var @interface = feature
+                .GetInterfaces()
+                .First(x => x.IsGenericType && typeof(IFeatureService<>) == x.GetGenericTypeDefinition());
 
             services.AddScoped(@interface, feature);
         }
@@ -63,6 +79,29 @@ public static class IServiceCollectionExtensions
                 .First(x => x != typeof(IRepository) && x.IsAssignableTo(typeof(IRepository)));
 
             services.AddScoped(@interface, repository);
+        }
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddRuleValidators(this IServiceCollection services)
+    {
+        var ruleValidators = AppDomain
+            .CurrentDomain
+            .GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(x => !x.IsInterface)
+            .Where(x => x.GetInterfaces().Any(x => x.IsGenericType && typeof(IRuleValidator<>) == x.GetGenericTypeDefinition()));
+
+        foreach (var ruleValidator in ruleValidators)
+        {
+            var @interface = ruleValidator
+                .GetInterfaces()
+                .First(x => x.IsGenericType && typeof(IRuleValidator<>) == x.GetGenericTypeDefinition());
+
+            services.AddSingleton(@interface, ruleValidator);
         }
 
         return services;
