@@ -14,7 +14,7 @@ public class ValidationErrorResponse : ErrorResponse
         Errors = errors;
     }
 
-    public ValidationErrorResponse(IEnumerable<Error> errors)
+    public ValidationErrorResponse(IEnumerable<BusinessRuleError> errors)
        : base("Validation errors detected!")
     {
         Errors = errors.Select(x => new ValidationFailure

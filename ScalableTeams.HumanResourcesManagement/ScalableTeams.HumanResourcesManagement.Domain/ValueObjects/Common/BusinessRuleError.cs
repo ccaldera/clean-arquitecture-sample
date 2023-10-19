@@ -1,8 +1,8 @@
 ﻿namespace ScalableTeams.HumanResourcesManagement.Domain.ValueObjects.Common;
 
-public class Error
+public class BusinessRuleError
 {
-    public Error(string propertyName, string errorMessage)
+    public BusinessRuleError(string propertyName, string errorMessage)
     {
         PropertyName = propertyName;
         ErrorMessage = errorMessage;

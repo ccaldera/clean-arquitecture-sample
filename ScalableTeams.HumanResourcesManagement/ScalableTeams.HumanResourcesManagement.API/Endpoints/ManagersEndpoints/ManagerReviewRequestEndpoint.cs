@@ -45,5 +45,3 @@ public class ManagerReviewRequestEndpoint : IEndpoint
         .WithTags("ManagersEndpoints");
     }
 }
-
-
