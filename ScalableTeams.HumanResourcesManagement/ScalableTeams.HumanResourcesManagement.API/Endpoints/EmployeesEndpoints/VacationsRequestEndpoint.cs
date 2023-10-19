@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.Application.Features;
 using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
 using System;
@@ -22,16 +23,16 @@ public class VacationsRequestEndpoint : IEndpoint
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost("api/employees/{employeeId}/requests/vacations",
+        app.MapPost("api/employees/requests/vacations",
             async (
-                [FromRoute] Guid employeeId,
+                HttpContext httpContext,
                 [FromBody] List<DateTime> dates,
                 [FromServices] IFeatureService<VacationsRequestInput> service,
                 CancellationToken cancellationToken) =>
         {
             var input = new VacationsRequestInput
             {
-                EmployeeId = employeeId,
+                EmployeeId = httpContext.GetUserId(),
                 Dates = dates
             };
 
@@ -41,6 +42,7 @@ public class VacationsRequestEndpoint : IEndpoint
 
             return Results.Ok();
         })
+        .RequireAuthorization()
         .WithTags("Employees Endpoints");
     }
 }

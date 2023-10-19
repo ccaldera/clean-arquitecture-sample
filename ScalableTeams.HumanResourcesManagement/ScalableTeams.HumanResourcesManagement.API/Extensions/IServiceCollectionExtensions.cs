@@ -1,15 +1,64 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using ScalableTeams.HumanResourcesManagement.API.Configuration;
 using ScalableTeams.HumanResourcesManagement.API.Endpoints;
+using ScalableTeams.HumanResourcesManagement.API.Endpoints.Security.Services;
 using ScalableTeams.HumanResourcesManagement.Application.Features;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
+using ScalableTeams.HumanResourcesManagement.Persistence;
 using ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Extensions;
 
 public static class IServiceCollectionExtensions
 {
+    public static IServiceCollection AddServices(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        services
+            .Configure<JwtConfiguration>(configuration.GetSection("Jwt"));
+
+        return services
+            .AddSingleton<IJwtService, JwtService>();
+    }
+
+    public static IServiceCollection AddDatabase(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        var connectionString = configuration.GetConnectionString("HumanResourcesManagementConnectionString")!;
+
+        services.AddDbContext<HumanResourcesManagementContext>(options => options.UseSqlServer(connectionString));
+
+        return services;
+    }
+
+    public static IServiceCollection AddTokenAuthentication(this IServiceCollection services, IConfiguration configuration)
+    {
+        var secret = configuration.GetSection("Jwt").GetSection("Secret").Value!;
+        var key = Encoding.ASCII.GetBytes(secret);
+
+        services.AddAuthentication(x =>
+        {
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+            .AddJwtBearer(x =>
+            {
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                };
+            });
+
+        return services;
+    }
+
     public static IServiceCollection AddEndpoints(this IServiceCollection services)
     {
         var endpoints = AppDomain

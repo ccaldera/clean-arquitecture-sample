@@ -26,6 +26,16 @@ public class EmployeeTypeConfigurations : IEntityTypeConfiguration<Employee>
             .HasMaxLength(120)
             .IsRequired();
 
+        builder
+            .Property(x => x.Email)
+            .HasMaxLength(150)
+            .IsRequired();
+
+        builder
+            .Property(x => x.Password)
+            .HasMaxLength(150)
+            .IsRequired();
+
         builder.HasMany(x => x.Subordinates)
             .WithOne(x => x.Manager)
             .HasForeignKey(x => x.ManagerId);

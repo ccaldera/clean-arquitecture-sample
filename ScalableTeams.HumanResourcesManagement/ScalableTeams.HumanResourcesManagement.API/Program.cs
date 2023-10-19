@@ -1,12 +1,9 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.API.Middlewares;
-using ScalableTeams.HumanResourcesManagement.Persistence;
 using System;
 
 namespace ScalableTeams.HumanResourcesManagement.API
@@ -18,15 +15,24 @@ namespace ScalableTeams.HumanResourcesManagement.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddAuthorization();
-            builder.Services.AddEndpoints();
-            builder.Services.AddFeatureServices();
-            builder.Services.AddRepositories();
+            var configuration = builder.Configuration;
 
-            var connectionString = builder.Configuration.GetConnectionString("HumanResourcesManagementConnectionString")!;
+            builder.Services
+                .AddServices(configuration)
+                .AddAuthorization()
+                .AddEndpoints()
+                .AddFeatureServices()
+                .AddRepositories()
+                .AddTokenAuthentication(configuration)
+                .AddDatabase(configuration)
+                .AddAuthentication()
+                .AddJwtBearer();
 
-            builder.Services.AddDbContext<HumanResourcesManagementContext>(options =>
-                options.UseSqlServer(connectionString));
+            builder
+                .Services
+                .AddAuthorizationBuilder()
+                .AddPolicy("Manager", policy => policy.RequireRole("Manager"))
+                .AddPolicy("HR", policy => policy.RequireRole("Human Resources"));
 
             builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -47,13 +53,14 @@ namespace ScalableTeams.HumanResourcesManagement.API
                 app.UseSwaggerUI();
             }
 
-            app.MapEndpoints();
-
             app.UseHttpsRedirection();
 
             app.UseMiddleware<ExceptionHandler>();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapEndpoints();
 
             app.Run();
         }

@@ -28,6 +28,7 @@ public class GetAllHrVacationsRequestsEndpoint : IEndpoint
                 return Results.Ok(result);
             })
         .Produces<GetAllHrActiveVacationsRequestResult>()
+        .RequireAuthorization("Human Resources")
         .WithTags("Human Resources Endpoints");
     }
 }
