@@ -1,15 +1,11 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.API.Middlewares;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace ScalableTeams.HumanResourcesManagement.API
@@ -40,7 +36,7 @@ namespace ScalableTeams.HumanResourcesManagement.API
                 .AddPolicy("Human Resources", policy => policy.RequireRole("Human Resources"));
 
             builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-            builder.Services.ConfigureHttpJsonOptions(opts => 
+            builder.Services.ConfigureHttpJsonOptions(opts =>
             {
                 opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });

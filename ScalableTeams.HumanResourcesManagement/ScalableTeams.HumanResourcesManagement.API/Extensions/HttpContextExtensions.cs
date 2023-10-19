@@ -19,7 +19,7 @@ public static class HttpContextExtensions
 
         var userId = new Guid(userName);
 
-        if(userId == Guid.Empty)
+        if (userId == Guid.Empty)
         {
             throw new UnauthorizedAccessException();
         }

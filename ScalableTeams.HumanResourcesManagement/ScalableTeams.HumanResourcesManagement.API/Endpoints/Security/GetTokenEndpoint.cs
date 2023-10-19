@@ -29,7 +29,7 @@ public class GetTokenEndpoint : IEndpoint
 
                 var response = await service.Execute(request, cancellationToken);
 
-                if(response is null)
+                if (response is null)
                 {
                     return Results.Unauthorized();
                 }

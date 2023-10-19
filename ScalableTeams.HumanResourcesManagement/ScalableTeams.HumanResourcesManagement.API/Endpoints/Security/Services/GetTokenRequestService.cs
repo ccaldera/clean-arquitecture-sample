@@ -14,7 +14,7 @@ public class GetTokenRequestService : IFeatureService<GetTokenRequest, GetTokenR
     private readonly IEmployeesRepository employeesRepository;
 
     public GetTokenRequestService(
-        IJwtService jwtService, 
+        IJwtService jwtService,
         IEmployeesRepository employeesRepository)
     {
         this.jwtService = jwtService;

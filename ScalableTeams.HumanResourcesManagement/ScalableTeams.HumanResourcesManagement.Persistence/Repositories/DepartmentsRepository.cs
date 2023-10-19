@@ -19,7 +19,7 @@ public class DepartmentsRepository : IDepartmentsRepository
         var departmentValue = department.GetDescription();
 
         return await dbContext.Employees
-            .AnyAsync(x => 
+            .AnyAsync(x =>
                 x.Department.Name == departmentValue
                 && x.Id == employeeId);
     }
