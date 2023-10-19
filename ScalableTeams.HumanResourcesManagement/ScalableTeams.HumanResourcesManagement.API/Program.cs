@@ -25,8 +25,7 @@ namespace ScalableTeams.HumanResourcesManagement.API
                 .AddRepositories()
                 .AddTokenAuthentication(configuration)
                 .AddDatabase(configuration)
-                .AddAuthentication()
-                .AddJwtBearer();
+                .AddAuthentication();
 
             builder
                 .Services
