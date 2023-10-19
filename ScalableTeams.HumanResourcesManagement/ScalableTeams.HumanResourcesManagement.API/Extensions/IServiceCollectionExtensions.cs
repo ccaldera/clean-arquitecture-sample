@@ -2,7 +2,6 @@
 using ScalableTeams.HumanResourcesManagement.API.Endpoints;
 using ScalableTeams.HumanResourcesManagement.Application.Features;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
-using ScalableTeams.HumanResourcesManagement.Domain.Rules;
 using ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 using System;
 using System.Linq;
@@ -82,27 +81,6 @@ public static class IServiceCollectionExtensions
         }
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-        return services;
-    }
-
-    public static IServiceCollection AddRuleValidators(this IServiceCollection services)
-    {
-        var ruleValidators = AppDomain
-            .CurrentDomain
-            .GetAssemblies()
-            .SelectMany(s => s.GetTypes())
-            .Where(x => !x.IsInterface)
-            .Where(x => x.GetInterfaces().Any(x => x.IsGenericType && typeof(IRuleValidator<>) == x.GetGenericTypeDefinition()));
-
-        foreach (var ruleValidator in ruleValidators)
-        {
-            var @interface = ruleValidator
-                .GetInterfaces()
-                .First(x => x.IsGenericType && typeof(IRuleValidator<>) == x.GetGenericTypeDefinition());
-
-            services.AddSingleton(@interface, ruleValidator);
-        }
 
         return services;
     }
