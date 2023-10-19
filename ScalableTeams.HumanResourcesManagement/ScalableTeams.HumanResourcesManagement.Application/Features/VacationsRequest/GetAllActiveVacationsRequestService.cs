@@ -17,7 +17,7 @@ public class GetAllActiveVacationsRequestService : IFeatureService<GetAllActiveV
     {
         var requests = vacationsRequestRepository
             .GetAllVacationsRequests()
-            .Where(x => 
+            .Where(x =>
                 x.Status == ProcessStatus.CreatedByEmployee
                 && x.ManagerId == input.ManagerId)
             .ToList();

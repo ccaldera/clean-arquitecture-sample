@@ -18,10 +18,10 @@ public class VacationRequest
 
     public VacationRequest(Employee? employee, List<DateTime> dates)
     {
-        Employee = employee 
+        Employee = employee
             ?? throw new ArgumentNullException(nameof(employee));
 
-        Dates = dates 
+        Dates = dates
             ?? throw new ArgumentNullException(nameof(dates));
 
         Id = Guid.NewGuid();

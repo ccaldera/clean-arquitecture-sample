@@ -26,7 +26,7 @@ public class ManagerReviewRequestService : IFeatureService<ManagerReviewRequest>
         var employee = await employeesRepository.Get(vacationsRequest.EmployeeId)
             ?? throw new ResourceNotFoundException($"The employee {vacationsRequest.EmployeeId} related to this request does not exists.");
 
-        if (employee.ManagerId != input.ReviewerId) 
+        if (employee.ManagerId != input.ReviewerId)
         {
             throw new BusinessLogicException("Only the employee's manager can review this request.");
         }

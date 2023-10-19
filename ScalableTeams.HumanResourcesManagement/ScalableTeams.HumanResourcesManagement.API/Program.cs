@@ -6,9 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.API.Middlewares;
-using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
 using ScalableTeams.HumanResourcesManagement.Persistence;
-using ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 using System;
 
 namespace ScalableTeams.HumanResourcesManagement.API
