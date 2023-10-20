@@ -40,8 +40,8 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput>
         await vacationsRequestRepository.SaveChanges();
 
         await managerNotificationService.SendNewVacationRequestNotification(
-            employee.ManagerId.Value, 
-            vacationsRequest, 
+            employee.ManagerId.Value,
+            vacationsRequest,
             cancellationToken);
     }
 

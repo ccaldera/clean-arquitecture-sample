@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.API.Middlewares;
@@ -16,6 +17,11 @@ namespace ScalableTeams.HumanResourcesManagement.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            var loggerFactory = LoggerFactory.Create(builder => builder
+                        .AddConsole()
+                        .AddDebug()
+                        .SetMinimumLevel(LogLevel.Debug));
 
             // Add services to the container.
             var configuration = builder.Configuration;
@@ -93,10 +99,10 @@ namespace ScalableTeams.HumanResourcesManagement.API
 
             app.UseMiddleware<ExceptionHandler>();
 
+            app.MapHubsEndpoints();
+
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.MapHubsEndpoints();
 
             app.MapEndpoints();
 
