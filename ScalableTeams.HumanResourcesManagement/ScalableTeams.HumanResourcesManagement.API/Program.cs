@@ -1,10 +1,12 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
+using ScalableTeams.HumanResourcesManagement.API.Hubs;
 using ScalableTeams.HumanResourcesManagement.API.Middlewares;
 using ScalableTeams.HumanResourcesManagement.API.Security;
 using System;
@@ -32,13 +34,14 @@ namespace ScalableTeams.HumanResourcesManagement.API
                 .AddEndpoints()
                 .AddFeatureServices()
                 .AddRepositories()
-                .AddHubs()
                 .AddNotificationsServices()
                 .AddTokenAuthentication(configuration)
                 .AddDatabase(configuration)
                 .AddAuthentication();
 
+            builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
             builder.Services.AddSignalR();
+
 
             builder
                 .Services
@@ -54,33 +57,7 @@ namespace ScalableTeams.HumanResourcesManagement.API
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(opt =>
-            {
-                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Scalable Teams HR", Version = "v1" });
-                opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    In = ParameterLocation.Header,
-                    Description = "Please enter token",
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    BearerFormat = "JWT",
-                    Scheme = "bearer"
-                });
-                opt.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                }); ;
-            });
+            builder.Services.AddSwagger();
 
             builder.Services.AddControllers();
 
@@ -99,7 +76,13 @@ namespace ScalableTeams.HumanResourcesManagement.API
 
             app.UseMiddleware<ExceptionHandler>();
 
-            app.MapHubsEndpoints();
+            app
+                .MapHub<ManagersHub>("/managers")
+                .RequireAuthorization(SecurityPolicies.ManagersPolicy);
+
+            app
+                .MapHub<HumanResourcesHub>("/hr")
+                .RequireAuthorization(SecurityPolicies.HumanResourcesPolicy);
 
             app.UseAuthentication();
             app.UseAuthorization();

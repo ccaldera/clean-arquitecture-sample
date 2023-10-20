@@ -9,7 +9,7 @@ public interface IVacationsRequestRepository : IRepository
 
     Task<VacationRequest?> Get(Guid id);
 
-    IEnumerable<VacationsRequestReview> GetAllVacationsRequests();
+    IQueryable<VacationsRequestReview> GetAllVacationsRequests();
 
     Task SaveChanges();
 }

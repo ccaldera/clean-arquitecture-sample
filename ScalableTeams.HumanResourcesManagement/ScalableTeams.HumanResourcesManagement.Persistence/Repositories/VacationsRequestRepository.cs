@@ -19,7 +19,7 @@ public class VacationsRequestRepository : IVacationsRequestRepository
         return await dbContext.VacationsRequests.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public IEnumerable<VacationsRequestReview> GetAllVacationsRequests()
+    public IQueryable<VacationsRequestReview> GetAllVacationsRequests()
     {
         return dbContext
             .VacationsRequests
