@@ -10,13 +10,16 @@ public class ManagerReviewRequestService : IFeatureService<ManagerReviewRequest>
 {
     private readonly IVacationsRequestRepository vacationsRequestRepository;
     private readonly IEmployeesRepository employeesRepository;
+    private readonly IHumanResourcesNotificationService humanResourcesNotificationService;
 
     public ManagerReviewRequestService(
         IVacationsRequestRepository vacationsRequestRepository,
-        IEmployeesRepository employeesRepository)
+        IEmployeesRepository employeesRepository,
+        IHumanResourcesNotificationService humanResourcesNotificationService)
     {
         this.vacationsRequestRepository = vacationsRequestRepository;
         this.employeesRepository = employeesRepository;
+        this.humanResourcesNotificationService = humanResourcesNotificationService;
     }
 
     public async Task Execute(ManagerReviewRequest input, CancellationToken cancellationToken)
@@ -45,5 +48,7 @@ public class ManagerReviewRequestService : IFeatureService<ManagerReviewRequest>
         }
 
         await vacationsRequestRepository.SaveChanges();
+
+        await humanResourcesNotificationService.SendNewVacationRequestNotification(vacationsRequest, cancellationToken);
     }
 }

@@ -2,25 +2,25 @@
 using ScalableTeams.HumanResourcesManagement.API.Hubs;
 using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest;
 using ScalableTeams.HumanResourcesManagement.Domain.Entities;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Services;
 
-public class ManagerNotificationService : IManagerNotificationService
+public class HumanResourcesNotificationService : IHumanResourcesNotificationService
 {
-    private readonly IHubContext<ManagersHub> context;
+    private readonly IHubContext<HumanResourcesHub> context;
 
-    public ManagerNotificationService(IHubContext<ManagersHub> context)
+    public HumanResourcesNotificationService(IHubContext<HumanResourcesHub> context)
     {
         this.context = context;
     }
 
-    public async Task SendNewVacationRequestNotification(Guid managerId, VacationRequest request, CancellationToken cancellationToken)
+    public async Task SendNewVacationRequestNotification(VacationRequest request, CancellationToken cancellationToken)
     {
         await context.Clients
-            .User(managerId.ToString())
+            .Group(HubsGroups.HumanResources)
             .SendAsync("NewVacationsRequest", request, cancellationToken);
+
     }
 }

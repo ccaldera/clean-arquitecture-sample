@@ -11,12 +11,12 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput>
 {
     private readonly IEmployeesRepository employeesRepository;
     private readonly IVacationsRequestRepository vacationsRequestRepository;
-    private readonly IManagerNotificationService managerNotificationService;
+    private readonly IManagersNotificationService managerNotificationService;
 
     public VacationsRequestService(
         IEmployeesRepository employeesRepository,
         IVacationsRequestRepository vacationsRequestRepository,
-        IManagerNotificationService managerNotificationService)
+        IManagersNotificationService managerNotificationService)
     {
         this.employeesRepository = employeesRepository;
         this.vacationsRequestRepository = vacationsRequestRepository;
