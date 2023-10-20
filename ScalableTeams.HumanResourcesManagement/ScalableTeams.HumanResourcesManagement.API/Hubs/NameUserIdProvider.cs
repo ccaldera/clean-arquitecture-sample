@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace ScalableTeams.HumanResourcesManagement.API.Security;
+namespace ScalableTeams.HumanResourcesManagement.API.Hubs;
 
 public class NameUserIdProvider : IUserIdProvider
 {

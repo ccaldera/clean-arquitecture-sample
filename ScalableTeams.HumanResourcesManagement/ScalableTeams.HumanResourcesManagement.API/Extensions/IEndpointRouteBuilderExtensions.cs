@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using ScalableTeams.HumanResourcesManagement.API.Interfaces;
+using ScalableTeams.HumanResourcesManagement.API.Endpoints;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Extensions;
 
@@ -15,18 +15,6 @@ public static class IEndpointRouteBuilderExtensions
         foreach (var endpoint in endpoints)
         {
             endpoint.AddRoute(builder);
-        }
-    }
-
-    public static void MapHubsEndpoints(this WebApplication builder)
-    {
-        var scope = builder.Services.CreateScope();
-
-        var hubEndpoints = scope.ServiceProvider.GetServices<IHub>();
-
-        foreach (var hubEndpoint in hubEndpoints)
-        {
-            hubEndpoint.AddHub(builder);
         }
     }
 }

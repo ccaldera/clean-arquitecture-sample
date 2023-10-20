@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using ScalableTeams.HumanResourcesManagement.API.Endpoints.ManagersEndpoints;
+using ScalableTeams.HumanResourcesManagement.API.Hubs;
 using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest;
 using ScalableTeams.HumanResourcesManagement.Domain.Entities;
 using System;

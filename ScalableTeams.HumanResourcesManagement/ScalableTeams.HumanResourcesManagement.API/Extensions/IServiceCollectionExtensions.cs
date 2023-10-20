@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using ScalableTeams.HumanResourcesManagement.API.Configuration;
-using ScalableTeams.HumanResourcesManagement.API.Interfaces;
-using ScalableTeams.HumanResourcesManagement.API.Security;
+using ScalableTeams.HumanResourcesManagement.API.Endpoints;
 using ScalableTeams.HumanResourcesManagement.API.Security.Services;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
@@ -74,25 +72,6 @@ public static class IServiceCollectionExtensions
         {
             services.AddScoped(typeof(IEndpoint), endpoint);
         }
-
-        return services;
-    }
-
-    public static IServiceCollection AddHubs(this IServiceCollection services)
-    {
-        var endpoints = AppDomain
-            .CurrentDomain
-            .GetAssemblies()
-            .SelectMany(s => s.GetTypes())
-            .Where(t => t.GetInterfaces().Contains(typeof(IHub)))
-            .Where(t => !t.IsInterface);
-
-        foreach (var endpoint in endpoints)
-        {
-            services.AddSingleton(typeof(IHub), endpoint);
-        }
-
-        services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
 
         return services;
     }

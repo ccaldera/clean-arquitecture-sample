@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
-using ScalableTeams.HumanResourcesManagement.API.Interfaces;
 using ScalableTeams.HumanResourcesManagement.API.Security;
 using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
