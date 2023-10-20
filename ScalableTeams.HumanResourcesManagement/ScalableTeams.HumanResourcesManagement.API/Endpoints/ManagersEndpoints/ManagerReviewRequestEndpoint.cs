@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
-using ScalableTeams.HumanResourcesManagement.Application.Features;
+using ScalableTeams.HumanResourcesManagement.API.Interfaces;
+using ScalableTeams.HumanResourcesManagement.API.Security;
 using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
+using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using ScalableTeams.HumanResourcesManagement.Domain.Enums;
 using System;
 using System.Threading;
@@ -20,6 +22,7 @@ public class ManagerReviewRequestEndpoint : IEndpoint
     {
         this.validator = validator;
     }
+
     public void AddRoute(IEndpointRouteBuilder app)
     {
         app.MapPost("api/managers/pending-reviews/vacations/{vacationsRequestId}",
@@ -43,7 +46,7 @@ public class ManagerReviewRequestEndpoint : IEndpoint
 
                 return Results.Ok();
             })
-            .RequireAuthorization("Manager")
+            .RequireAuthorization(SecurityPolicies.ManagersPolicy)
             .WithTags("Managers Endpoints");
     }
 }

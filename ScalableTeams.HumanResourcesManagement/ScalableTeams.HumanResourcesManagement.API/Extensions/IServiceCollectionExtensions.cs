@@ -4,9 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using ScalableTeams.HumanResourcesManagement.API.Configuration;
-using ScalableTeams.HumanResourcesManagement.API.Endpoints;
-using ScalableTeams.HumanResourcesManagement.API.Endpoints.Security.Services;
-using ScalableTeams.HumanResourcesManagement.Application.Features;
+using ScalableTeams.HumanResourcesManagement.API.Interfaces;
+using ScalableTeams.HumanResourcesManagement.API.Security.Services;
+using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
 using ScalableTeams.HumanResourcesManagement.Persistence;
 using ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
@@ -76,6 +76,23 @@ public static class IServiceCollectionExtensions
         return services;
     }
 
+    public static IServiceCollection AddHubs(this IServiceCollection services)
+    {
+        var endpoints = AppDomain
+            .CurrentDomain
+            .GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(t => t.GetInterfaces().Contains(typeof(IHub)))
+            .Where(t => !t.IsInterface);
+
+        foreach (var endpoint in endpoints)
+        {
+            services.AddScoped(typeof(IHub), endpoint);
+        }
+
+        return services;
+    }
+
     public static IServiceCollection AddFeatureServices(this IServiceCollection services)
     {
         var types = AppDomain
@@ -131,6 +148,26 @@ public static class IServiceCollectionExtensions
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        return services;
+    }
+
+    public static IServiceCollection AddNotificationsServices(this IServiceCollection services)
+    {
+        var repositories = AppDomain
+            .CurrentDomain
+            .GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(t => t.GetInterfaces().Contains(typeof(INotificationService)))
+            .Where(t => !t.IsInterface);
+
+        foreach (var repository in repositories)
+        {
+            var @interface = repository
+                .GetInterfaces()
+                .First(x => x != typeof(INotificationService) && x.IsAssignableTo(typeof(INotificationService)));
+
+            services.AddSingleton(@interface, repository);
+        }
         return services;
     }
 }

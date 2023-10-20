@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using ScalableTeams.HumanResourcesManagement.Application.Features;
+using ScalableTeams.HumanResourcesManagement.API.Interfaces;
+using ScalableTeams.HumanResourcesManagement.API.Security;
 using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
+using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using System.Threading;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.HumanResourcesEndpoints;
@@ -28,7 +30,7 @@ public class GetAllHrVacationsRequestsEndpoint : IEndpoint
                 return Results.Ok(result);
             })
         .Produces<GetAllHrActiveVacationsRequestResult>()
-        .RequireAuthorization("Human Resources")
+        .RequireAuthorization(SecurityPolicies.HumanResourcesPolicy)
         .WithTags("Human Resources Endpoints");
     }
 }

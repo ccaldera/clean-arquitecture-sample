@@ -1,4 +1,5 @@
 ﻿using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
+using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using ScalableTeams.HumanResourcesManagement.Domain.Entities;
 using ScalableTeams.HumanResourcesManagement.Domain.Exceptions;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
@@ -10,19 +11,25 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput>
 {
     private readonly IEmployeesRepository employeesRepository;
     private readonly IVacationsRequestRepository vacationsRequestRepository;
+    private readonly IManagerNotificationService managerNotificationService;
 
     public VacationsRequestService(
         IEmployeesRepository employeesRepository,
-        IVacationsRequestRepository vacationsRequestRepository)
+        IVacationsRequestRepository vacationsRequestRepository,
+        IManagerNotificationService managerNotificationService)
     {
         this.employeesRepository = employeesRepository;
         this.vacationsRequestRepository = vacationsRequestRepository;
+        this.managerNotificationService = managerNotificationService;
     }
 
     public async Task Execute(VacationsRequestInput input, CancellationToken cancellationToken)
     {
         var employee = await employeesRepository.Get(input.EmployeeId)
             ?? throw new ResourceNotFoundException($"The requested employee id {input.EmployeeId} does not exists");
+
+        _ = employee.ManagerId
+            ?? throw new BusinessLogicException("The employee is not assigned to any manager.");
 
         var vacationsRequest = new VacationRequest(employee, input.Dates);
 
@@ -31,6 +38,11 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput>
         await vacationsRequestRepository.Insert(vacationsRequest);
 
         await vacationsRequestRepository.SaveChanges();
+
+        await managerNotificationService.SendNewVacationRequestNotification(
+            employee.ManagerId.Value, 
+            vacationsRequest, 
+            cancellationToken);
     }
 
     private static void ValidateAndThrow(VacationRequest target)

@@ -1,4 +1,4 @@
-﻿namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.Security.Models;
+﻿namespace ScalableTeams.HumanResourcesManagement.API.Security.Models;
 
 public class GetTokenRequest
 {

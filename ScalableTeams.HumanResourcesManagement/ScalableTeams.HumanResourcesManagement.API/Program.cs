@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.API.Middlewares;
+using ScalableTeams.HumanResourcesManagement.API.Security;
 using System;
 using System.Text.Json.Serialization;
 
@@ -25,15 +26,19 @@ namespace ScalableTeams.HumanResourcesManagement.API
                 .AddEndpoints()
                 .AddFeatureServices()
                 .AddRepositories()
+                .AddHubs()
+                .AddNotificationsServices()
                 .AddTokenAuthentication(configuration)
                 .AddDatabase(configuration)
                 .AddAuthentication();
 
+            builder.Services.AddSignalR();
+
             builder
                 .Services
                 .AddAuthorizationBuilder()
-                .AddPolicy("Manager", policy => policy.RequireRole("Manager"))
-                .AddPolicy("Human Resources", policy => policy.RequireRole("Human Resources"));
+                .AddPolicy(SecurityPolicies.ManagersPolicy, policy => policy.RequireRole(SecurityRoles.ManagerRole))
+                .AddPolicy(SecurityPolicies.HumanResourcesPolicy, policy => policy.RequireRole(SecurityRoles.HumanResourcesRole));
 
             builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.ConfigureHttpJsonOptions(opts =>
@@ -62,13 +67,13 @@ namespace ScalableTeams.HumanResourcesManagement.API
                         {
                             Reference = new OpenApiReference
                             {
-                                Type=ReferenceType.SecurityScheme,
-                                Id="Bearer"
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
                             }
                         },
-                        new string[]{}
+                        Array.Empty<string>()
                     }
-                });
+                }); ;
             });
 
             builder.Services.AddControllers();
@@ -90,6 +95,8 @@ namespace ScalableTeams.HumanResourcesManagement.API
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapHubsEndpoints();
 
             app.MapEndpoints();
 

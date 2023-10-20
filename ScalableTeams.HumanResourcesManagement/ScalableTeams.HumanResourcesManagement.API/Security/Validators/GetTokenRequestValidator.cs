@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using ScalableTeams.HumanResourcesManagement.API.Endpoints.Security.Models;
+using ScalableTeams.HumanResourcesManagement.API.Security.Models;
 
-namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.Security.Validators;
+namespace ScalableTeams.HumanResourcesManagement.API.Security.Validators;
 
 public class GetTokenRequestValidator : AbstractValidator<GetTokenRequest>
 {

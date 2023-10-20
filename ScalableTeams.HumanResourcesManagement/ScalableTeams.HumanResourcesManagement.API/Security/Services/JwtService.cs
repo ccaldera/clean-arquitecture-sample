@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ScalableTeams.HumanResourcesManagement.API.Configuration;
-using ScalableTeams.HumanResourcesManagement.API.Endpoints.Security.Models;
+using ScalableTeams.HumanResourcesManagement.API.Security.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.Security.Services;
+namespace ScalableTeams.HumanResourcesManagement.API.Security.Services;
 
 public class JwtService : IJwtService
 {

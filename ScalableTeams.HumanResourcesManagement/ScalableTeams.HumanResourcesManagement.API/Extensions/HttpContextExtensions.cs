@@ -8,9 +8,7 @@ public static class HttpContextExtensions
 {
     public static Guid GetUserId(this HttpContext httpContext)
     {
-        var userName = httpContext?.User?.Claims
-            .FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.Sid)?
-            .Value;
+        var userName = httpContext?.User?.Identity?.Name;
 
         if (userName is null)
         {

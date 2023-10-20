@@ -1,8 +1,8 @@
-﻿using ScalableTeams.HumanResourcesManagement.API.Endpoints.Security.Models;
+﻿using ScalableTeams.HumanResourcesManagement.API.Security.Models;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.Security.Services;
+namespace ScalableTeams.HumanResourcesManagement.API.Security.Services;
 
 public interface IJwtService
 {

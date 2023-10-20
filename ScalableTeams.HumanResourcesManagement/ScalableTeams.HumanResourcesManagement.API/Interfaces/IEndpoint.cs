@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Routing;
 
-namespace ScalableTeams.HumanResourcesManagement.API.Endpoints;
+namespace ScalableTeams.HumanResourcesManagement.API.Interfaces;
 
 public interface IEndpoint
 {

@@ -1,4 +1,4 @@
-﻿namespace ScalableTeams.HumanResourcesManagement.Application.Features;
+﻿namespace ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 
 public interface IFeatureService<TInput, TResult>
 {
