@@ -16,7 +16,7 @@ public class EmployeesNotificationService : IEmployeesNotificationService
         this.context = context;
     }
 
-    public async Task SendVacationResultNotification(VacationRequest request, CancellationToken cancellationToken)
+    public async Task SendVacationRequestUpdateNotification(VacationRequest request, CancellationToken cancellationToken)
     {
         await context.Clients
             .Users(request.EmployeeId.ToString())

@@ -56,7 +56,7 @@ public class ManagerReviewRequestService : IFeatureService<ManagerReviewRequest>
         var notifications = new Task[] 
         {
             humanResourcesNotificationService.SendNewVacationRequestNotification(vacationsRequest, cancellationToken),
-            employeesNotificationService.SendVacationResultNotification(vacationsRequest, cancellationToken)
+            employeesNotificationService.SendVacationRequestUpdateNotification(vacationsRequest, cancellationToken)
         };
 
         try

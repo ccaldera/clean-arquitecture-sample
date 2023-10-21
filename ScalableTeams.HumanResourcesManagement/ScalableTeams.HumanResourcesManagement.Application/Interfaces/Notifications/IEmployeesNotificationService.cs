@@ -4,5 +4,5 @@ namespace ScalableTeams.HumanResourcesManagement.Application.Interfaces.Notifica
 
 public interface IEmployeesNotificationService : INotificationService
 {
-    Task SendVacationResultNotification(VacationRequest request, CancellationToken cancellationToken);
+    Task SendVacationRequestUpdateNotification(VacationRequest request, CancellationToken cancellationToken);
 }

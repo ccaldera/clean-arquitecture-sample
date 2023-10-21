@@ -54,7 +54,7 @@ public class HrReviewRequestService : IFeatureService<HrReviewRequest>
 
         var tasks = new List<Task>()
         {
-            employeesNotificationService.SendVacationResultNotification(vacationsRequest, cancellationToken)
+            employeesNotificationService.SendVacationRequestUpdateNotification(vacationsRequest, cancellationToken)
         };
 
         if(input.NewStatus == ProcessStatus.HrApproves)
