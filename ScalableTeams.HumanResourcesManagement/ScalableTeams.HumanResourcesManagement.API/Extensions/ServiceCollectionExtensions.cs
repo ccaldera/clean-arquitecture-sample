@@ -5,9 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ScalableTeams.HumanResourcesManagement.API.Configuration;
+using ScalableTeams.HumanResourcesManagement.API.DomainEvents;
 using ScalableTeams.HumanResourcesManagement.API.Endpoints;
 using ScalableTeams.HumanResourcesManagement.API.Security.Services;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.DomainEvents;
 using ScalableTeams.HumanResourcesManagement.Domain.Common.Repositories;
 using ScalableTeams.HumanResourcesManagement.Infrastucture.Services;
 using ScalableTeams.HumanResourcesManagement.Persistence;
@@ -198,6 +200,34 @@ public static class ServiceCollectionExtensions
 
             services.AddSingleton(@interface, repository);
         }
+        return services;
+    }
+
+    public static IServiceCollection AddEventDomains(this IServiceCollection services)
+    {
+        var types = AppDomain
+            .CurrentDomain
+            .GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(x => !x.IsInterface);
+
+        var domainEvents = types
+            .Where(x => x.GetInterfaces().Any(x =>
+                x.IsGenericType &&
+                typeof(IDomainEventHandler<>) == x.GetGenericTypeDefinition() &&
+                !x.IsAbstract));
+
+        foreach (var domainEvent in domainEvents)
+        {
+            var @interface = domainEvent
+                .GetInterfaces()
+                .First(x => x.IsGenericType && typeof(IDomainEventHandler<>) == x.GetGenericTypeDefinition());
+
+            services.AddScoped(@interface, domainEvent);
+        }
+
+        services.AddScoped<IEventDispatcher, DomainEventDispatcher>();
+
         return services;
     }
 }
