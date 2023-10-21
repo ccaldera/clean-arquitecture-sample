@@ -4,7 +4,7 @@ using ScalableTeams.HumanResourcesManagement.API.Endpoints;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Extensions;
 
-public static class IEndpointRouteBuilderExtensions
+public static class EndpointRouteBuilderExtensions
 {
     public static void MapEndpoints(this WebApplication builder)
     {

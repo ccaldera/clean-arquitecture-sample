@@ -9,6 +9,7 @@ using ScalableTeams.HumanResourcesManagement.API.Endpoints;
 using ScalableTeams.HumanResourcesManagement.API.Security.Services;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
+using ScalableTeams.HumanResourcesManagement.Infrastucture.Services;
 using ScalableTeams.HumanResourcesManagement.Persistence;
 using ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 using System;
@@ -17,7 +18,7 @@ using System.Text;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Extensions;
 
-public static class IServiceCollectionExtensions
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddSwagger(this IServiceCollection services)
     {
@@ -48,6 +49,20 @@ public static class IServiceCollectionExtensions
                     }
                 });
         });
+    }
+
+    public static IServiceCollection AddAccountingService(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        services.AddHttpClient(nameof(AccountingService), c =>
+        {
+            var baseUrl = configuration.GetSection("AccountingServiceConfiguration").GetSection("BaseUrl").Value!;
+            c.BaseAddress = new Uri(baseUrl);
+            c.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
+
+        services.AddScoped<IAccountingService, AccountingService>();
+
+        return services;
     }
 
     public static IServiceCollection AddServices(this IServiceCollection services, ConfigurationManager configuration)

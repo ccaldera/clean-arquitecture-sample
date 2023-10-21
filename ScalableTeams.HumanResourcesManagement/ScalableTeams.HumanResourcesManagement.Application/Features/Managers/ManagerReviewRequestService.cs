@@ -12,15 +12,18 @@ public class ManagerReviewRequestService : IFeatureService<ManagerReviewRequest>
     private readonly IVacationsRequestRepository vacationsRequestRepository;
     private readonly IEmployeesRepository employeesRepository;
     private readonly IHumanResourcesNotificationService humanResourcesNotificationService;
+    private readonly IEmployeesNotificationService employeesNotificationService;
 
     public ManagerReviewRequestService(
         IVacationsRequestRepository vacationsRequestRepository,
         IEmployeesRepository employeesRepository,
-        IHumanResourcesNotificationService humanResourcesNotificationService)
+        IHumanResourcesNotificationService humanResourcesNotificationService,
+        IEmployeesNotificationService employeesNotificationService)
     {
         this.vacationsRequestRepository = vacationsRequestRepository;
         this.employeesRepository = employeesRepository;
         this.humanResourcesNotificationService = humanResourcesNotificationService;
+        this.employeesNotificationService = employeesNotificationService;
     }
 
     public async Task Execute(ManagerReviewRequest input, CancellationToken cancellationToken)
@@ -50,6 +53,18 @@ public class ManagerReviewRequestService : IFeatureService<ManagerReviewRequest>
 
         await vacationsRequestRepository.SaveChanges();
 
-        await humanResourcesNotificationService.SendNewVacationRequestNotification(vacationsRequest, cancellationToken);
+        var notifications = new Task[] 
+        {
+            humanResourcesNotificationService.SendNewVacationRequestNotification(vacationsRequest, cancellationToken),
+            employeesNotificationService.SendVacationResultNotification(vacationsRequest, cancellationToken)
+        };
+
+        try
+        {
+            await Task.WhenAll(notifications);
+        }
+        catch (Exception)
+        {
+        }
     }
 }

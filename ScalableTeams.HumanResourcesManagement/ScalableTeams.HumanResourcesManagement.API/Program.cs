@@ -36,11 +36,11 @@ namespace ScalableTeams.HumanResourcesManagement.API
                 .AddNotificationsServices()
                 .AddTokenAuthentication(configuration)
                 .AddDatabase(configuration)
+                .AddAccountingService(configuration)
                 .AddAuthentication();
 
             builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
             builder.Services.AddSignalR();
-
 
             builder
                 .Services
@@ -82,6 +82,10 @@ namespace ScalableTeams.HumanResourcesManagement.API
             app
                 .MapHub<HumanResourcesHub>("/hr")
                 .RequireAuthorization(SecurityPolicies.HumanResourcesPolicy);
+
+            app
+                .MapHub<HumanResourcesHub>("/employees")
+                .RequireAuthorization();
 
             app.UseAuthentication();
             app.UseAuthorization();
