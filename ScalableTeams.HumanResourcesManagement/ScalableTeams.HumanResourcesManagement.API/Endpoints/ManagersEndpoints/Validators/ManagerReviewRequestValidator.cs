@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
+using ScalableTeams.HumanResourcesManagement.Application.Features.HumanResources.Models;
 using ScalableTeams.HumanResourcesManagement.Domain.Enums;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.ManagersEndpoints.Validators;

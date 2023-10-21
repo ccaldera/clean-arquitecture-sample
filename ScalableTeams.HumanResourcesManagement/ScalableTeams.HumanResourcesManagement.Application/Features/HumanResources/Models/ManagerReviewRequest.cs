@@ -1,6 +1,6 @@
 ﻿using ScalableTeams.HumanResourcesManagement.Domain.Enums;
 
-namespace ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
+namespace ScalableTeams.HumanResourcesManagement.Application.Features.HumanResources.Models;
 
 public class ManagerReviewRequest
 {

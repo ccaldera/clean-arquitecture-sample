@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using ScalableTeams.HumanResourcesManagement.API.Hubs;
-using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest;
+using ScalableTeams.HumanResourcesManagement.Application.Interfaces.Notifications;
 using ScalableTeams.HumanResourcesManagement.Domain.Entities;
 using System;
 using System.Threading;

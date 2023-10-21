@@ -1,9 +1,9 @@
-﻿using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
+﻿using ScalableTeams.HumanResourcesManagement.Application.Features.Managers.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using ScalableTeams.HumanResourcesManagement.Domain.Enums;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
 
-namespace ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest;
+namespace ScalableTeams.HumanResourcesManagement.Application.Features.Managers;
 
 public class GetAllActiveVacationsRequestService : IFeatureService<GetAllActiveVacationsRequestInput, GetAllActiveVacationsRequestResult>
 {

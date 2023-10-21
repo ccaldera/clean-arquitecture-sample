@@ -1,11 +1,12 @@
-﻿using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
+﻿using ScalableTeams.HumanResourcesManagement.Application.Features.Employees.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
+using ScalableTeams.HumanResourcesManagement.Application.Interfaces.Notifications;
 using ScalableTeams.HumanResourcesManagement.Domain.Entities;
 using ScalableTeams.HumanResourcesManagement.Domain.Exceptions;
 using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.ValueObjects.Common;
 
-namespace ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest;
+namespace ScalableTeams.HumanResourcesManagement.Application.Features.Employees;
 
 public class VacationsRequestService : IFeatureService<VacationsRequestInput>
 {

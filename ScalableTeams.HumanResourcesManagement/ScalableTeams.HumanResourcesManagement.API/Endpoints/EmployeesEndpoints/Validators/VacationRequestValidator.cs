@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequest.Models;
+using ScalableTeams.HumanResourcesManagement.Application.Features.Employees.Models;
 using System;
 using System.Linq;
 
