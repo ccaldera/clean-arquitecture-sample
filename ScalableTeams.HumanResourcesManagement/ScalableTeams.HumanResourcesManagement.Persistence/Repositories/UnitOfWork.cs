@@ -20,8 +20,7 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            employeesRepository ??= new EmployeesRepository(dbContext);
-            return employeesRepository;
+            return employeesRepository ??= new EmployeesRepository(dbContext);
         }
     }
 
@@ -29,8 +28,7 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            departmentsRepository ??= new DepartmentsRepository(dbContext);
-            return departmentsRepository;
+            return departmentsRepository ??= new DepartmentsRepository(dbContext);
         }
     }
 
@@ -38,8 +36,7 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            vacationsRequestRepository ??= new VacationsRequestRepository(dbContext);
-            return vacationsRequestRepository;
+            return vacationsRequestRepository ??= new VacationsRequestRepository(dbContext);
         }
     }
 
