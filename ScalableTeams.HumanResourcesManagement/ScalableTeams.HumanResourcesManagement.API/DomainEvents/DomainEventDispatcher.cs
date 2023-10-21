@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ScalableTeams.HumanResourcesManagement.Domain.Common.DomainEvents;
-using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.DomainEvents;
 using System;
 using System.Collections.Generic;
 using System.Threading;
