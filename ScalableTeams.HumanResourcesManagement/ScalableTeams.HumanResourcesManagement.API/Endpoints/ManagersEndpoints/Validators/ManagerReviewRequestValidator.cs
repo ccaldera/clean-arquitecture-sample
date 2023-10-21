@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
-using ScalableTeams.HumanResourcesManagement.Application.Features.HumanResources.Models;
-using ScalableTeams.HumanResourcesManagement.Domain.Enums;
+using ScalableTeams.HumanResourcesManagement.Application.Features.ManagerReviewOpenVacationRequests.Models;
+using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Enums;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.ManagersEndpoints.Validators;
 
-public class ManagerReviewRequestValidator : AbstractValidator<ManagerReviewRequest>
+public class ManagerReviewRequestValidator : AbstractValidator<ManagerReviewRequestInput>
 {
     public ManagerReviewRequestValidator()
     {
@@ -15,6 +15,6 @@ public class ManagerReviewRequestValidator : AbstractValidator<ManagerReviewRequ
             .NotEmpty();
 
         RuleFor(x => x.NewStatus)
-            .Must(x => x == ProcessStatus.ManagerApproves || x == ProcessStatus.ManagerRejects);
+            .Must(x => x == VactionRequestsStatus.ApprovedByManager || x == VactionRequestsStatus.RejectedByManager);
     }
 }

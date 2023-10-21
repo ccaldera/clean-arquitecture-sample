@@ -1,4 +1,4 @@
-﻿using ScalableTeams.HumanResourcesManagement.Domain.ValueObjects.Common;
+﻿using ScalableTeams.HumanResourcesManagement.Domain.Common.ValueObjects;
 
 namespace ScalableTeams.HumanResourcesManagement.Domain.Exceptions;
 

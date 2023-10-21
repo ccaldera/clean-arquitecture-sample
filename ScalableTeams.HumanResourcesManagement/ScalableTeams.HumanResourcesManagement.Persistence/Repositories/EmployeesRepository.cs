@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ScalableTeams.HumanResourcesManagement.Domain.Entities;
-using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
+using ScalableTeams.HumanResourcesManagement.Domain.Employees.Entities;
+using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 

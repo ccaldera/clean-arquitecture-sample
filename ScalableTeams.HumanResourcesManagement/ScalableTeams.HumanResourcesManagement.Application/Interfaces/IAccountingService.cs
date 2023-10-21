@@ -1,4 +1,4 @@
-﻿using ScalableTeams.HumanResourcesManagement.Domain.Entities;
+﻿using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Entities;
 
 namespace ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 

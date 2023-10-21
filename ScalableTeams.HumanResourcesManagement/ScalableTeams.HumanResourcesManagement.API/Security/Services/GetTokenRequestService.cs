@@ -1,7 +1,7 @@
 ﻿using ScalableTeams.HumanResourcesManagement.API.Security.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
-using ScalableTeams.HumanResourcesManagement.Domain.Enums;
-using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
+using ScalableTeams.HumanResourcesManagement.Domain.Departments.Enums;
+using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Utilities;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -46,7 +46,7 @@ public class GetTokenRequestService : IFeatureService<GetTokenRequest, GetTokenR
             new Claim(ClaimTypes.Role, employee.Department.Name)
         };
 
-        if (employee.Department.Name == Departments.HumanResources.GetDescription())
+        if (employee.Department.Name == DepartmentType.HumanResources.GetDescription())
         {
             claims.Add(new Claim(ClaimTypes.Role, SecurityRoles.HumanResourcesRole));
         }

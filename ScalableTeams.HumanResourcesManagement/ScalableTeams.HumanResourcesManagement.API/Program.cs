@@ -4,10 +4,17 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ScalableTeams.HumanResourcesManagement.API.DomainEvents;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.API.Hubs;
 using ScalableTeams.HumanResourcesManagement.API.Middlewares;
 using ScalableTeams.HumanResourcesManagement.API.Security;
+using ScalableTeams.HumanResourcesManagement.Application.Features.EmployeeRequestsVacations;
+using ScalableTeams.HumanResourcesManagement.Application.Features.HumanResourcesReviewOpenRequests;
+using ScalableTeams.HumanResourcesManagement.Application.Features.ManagerReviewOpenVacationRequests;
+using ScalableTeams.HumanResourcesManagement.Application.Features.VacationsRequestRejected;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.DomainEvents;
+using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.DomainEvents;
 using System;
 using System.Text.Json.Serialization;
 
@@ -26,8 +33,9 @@ namespace ScalableTeams.HumanResourcesManagement.API
 
             // Add services to the container.
             var configuration = builder.Configuration;
+            var services = builder.Services;
 
-            builder.Services
+            services
                 .AddServices(configuration)
                 .AddAuthorization()
                 .AddEndpoints()
@@ -38,6 +46,14 @@ namespace ScalableTeams.HumanResourcesManagement.API
                 .AddDatabase(configuration)
                 .AddAccountingService(configuration)
                 .AddAuthentication();
+
+            services.AddScoped<IEventDispatcher, DomainEventDispatcher>();
+            services.AddScoped<IDomainEventHandler<VacationRequestCreated>, NotifyManagementHandler>();
+            services.AddScoped<IDomainEventHandler<VacationRequestApprovedByManager>, NotifyHumanResourcesHandler>();
+            services.AddScoped<IDomainEventHandler<VacationRequestApprovedByManager>, Application.Features.ManagerReviewOpenVacationRequests.NotifyEmployeeHandler>();
+            services.AddScoped<IDomainEventHandler<VacationRequestApprovedByHumanResources>, NotifyAccountService>();
+            services.AddScoped<IDomainEventHandler<VacationRequestApprovedByHumanResources>, Application.Features.HumanResourcesReviewOpenRequests.NotifyEmployeeHandler>();
+            services.AddScoped<IDomainEventHandler<VacationRequestRejected>, VacationsRequestRejectedHandler>();
 
             builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
             builder.Services.AddSignalR();

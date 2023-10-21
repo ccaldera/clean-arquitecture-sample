@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.API.Security;
-using ScalableTeams.HumanResourcesManagement.Application.Features.Managers.Models;
+using ScalableTeams.HumanResourcesManagement.Application.Features.ManagerReviewOpenVacationRequests.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using System.Threading;
 
@@ -13,9 +13,9 @@ namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.ManagersEndpoints
 
 public class GetAllVacationsRequestsEndpoint : IEndpoint
 {
-    private readonly IValidator<GetAllActiveVacationsRequestInput> validator;
+    private readonly IValidator<GetOpenVacationsRequestsInput> validator;
 
-    public GetAllVacationsRequestsEndpoint(IValidator<GetAllActiveVacationsRequestInput> validator)
+    public GetAllVacationsRequestsEndpoint(IValidator<GetOpenVacationsRequestsInput> validator)
     {
         this.validator = validator;
     }
@@ -24,10 +24,10 @@ public class GetAllVacationsRequestsEndpoint : IEndpoint
         app.MapGet("api/managers/pending-reviews/vacations/",
             async (
                 HttpContext httpContext,
-                [FromServices] IFeatureService<GetAllActiveVacationsRequestInput, GetAllActiveVacationsRequestResult> service,
+                [FromServices] IFeatureService<GetOpenVacationsRequestsInput, GetOpenVacationsRequestsResult> service,
                 CancellationToken cancellationToken) =>
         {
-            var input = new GetAllActiveVacationsRequestInput
+            var input = new GetOpenVacationsRequestsInput
             {
                 ManagerId = httpContext.GetUserId()
             };
@@ -40,7 +40,7 @@ public class GetAllVacationsRequestsEndpoint : IEndpoint
 
             return Results.Ok(result);
         })
-        .Produces<GetAllActiveVacationsRequestResult>()
+        .Produces<GetOpenVacationsRequestsResult>()
         .RequireAuthorization(SecurityPolicies.ManagersPolicy)
         .WithTags("Managers Endpoints");
     }

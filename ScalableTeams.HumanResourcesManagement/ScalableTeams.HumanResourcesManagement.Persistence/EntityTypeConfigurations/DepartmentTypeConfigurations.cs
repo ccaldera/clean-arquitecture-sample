@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ScalableTeams.HumanResourcesManagement.Domain.Entities;
+using ScalableTeams.HumanResourcesManagement.Domain.Departments.Entities;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.EntityTypeConfigurations;
 

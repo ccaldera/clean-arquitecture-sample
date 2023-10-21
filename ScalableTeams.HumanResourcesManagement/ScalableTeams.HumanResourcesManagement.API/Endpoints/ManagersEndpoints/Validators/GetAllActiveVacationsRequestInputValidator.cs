@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using ScalableTeams.HumanResourcesManagement.Application.Features.Managers.Models;
+using ScalableTeams.HumanResourcesManagement.Application.Features.ManagerReviewOpenVacationRequests.Models;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.ManagersEndpoints.Validators;
 
-public class GetAllActiveVacationsRequestInputValidator : AbstractValidator<GetAllActiveVacationsRequestInput>
+public class GetAllActiveVacationsRequestInputValidator : AbstractValidator<GetOpenVacationsRequestsInput>
 {
     public GetAllActiveVacationsRequestInputValidator()
     {

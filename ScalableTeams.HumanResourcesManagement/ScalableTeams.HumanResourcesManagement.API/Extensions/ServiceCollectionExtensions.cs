@@ -8,7 +8,7 @@ using ScalableTeams.HumanResourcesManagement.API.Configuration;
 using ScalableTeams.HumanResourcesManagement.API.Endpoints;
 using ScalableTeams.HumanResourcesManagement.API.Security.Services;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
-using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.Repositories;
 using ScalableTeams.HumanResourcesManagement.Infrastucture.Services;
 using ScalableTeams.HumanResourcesManagement.Persistence;
 using ScalableTeams.HumanResourcesManagement.Persistence.Repositories;

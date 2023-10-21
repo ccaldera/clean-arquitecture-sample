@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using ScalableTeams.HumanResourcesManagement.API.Security;
-using ScalableTeams.HumanResourcesManagement.Application.Features.HumanResources.Models;
+using ScalableTeams.HumanResourcesManagement.Application.Features.HumanResourcesReviewOpenRequests.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using System.Threading;
 
@@ -19,16 +19,16 @@ public class GetAllHrVacationsRequestsEndpoint : IEndpoint
     {
         app.MapGet("api/hr/pending-reviews/vacations/",
             async (
-                [FromServices] IFeatureService<GetAllHrActiveVacationsRequestInput, GetAllHrActiveVacationsRequestResult> service,
+                [FromServices] IFeatureService<GetOpenVacationRequestsInput, GetOpenVacationRequestsResult> service,
                 CancellationToken cancellationToken) =>
             {
                 var result = await service.Execute(
-                    new GetAllHrActiveVacationsRequestInput(),
+                    new GetOpenVacationRequestsInput(),
                     cancellationToken);
 
                 return Results.Ok(result);
             })
-        .Produces<GetAllHrActiveVacationsRequestResult>()
+        .Produces<GetOpenVacationRequestsResult>()
         .RequireAuthorization(SecurityPolicies.HumanResourcesPolicy)
         .WithTags("Human Resources Endpoints");
     }

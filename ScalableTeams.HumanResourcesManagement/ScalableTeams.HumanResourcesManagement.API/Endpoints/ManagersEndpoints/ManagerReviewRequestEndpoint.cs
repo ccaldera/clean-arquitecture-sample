@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.API.Security;
-using ScalableTeams.HumanResourcesManagement.Application.Features.HumanResources.Models;
+using ScalableTeams.HumanResourcesManagement.Application.Features.ManagerReviewOpenVacationRequests.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
-using ScalableTeams.HumanResourcesManagement.Domain.Enums;
+using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Enums;
 using System;
 using System.Threading;
 
@@ -15,9 +15,9 @@ namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.ManagersEndpoints
 
 public class ManagerReviewRequestEndpoint : IEndpoint
 {
-    private readonly IValidator<ManagerReviewRequest> validator;
+    private readonly IValidator<ManagerReviewRequestInput> validator;
 
-    public ManagerReviewRequestEndpoint(IValidator<ManagerReviewRequest> validator)
+    public ManagerReviewRequestEndpoint(IValidator<ManagerReviewRequestInput> validator)
     {
         this.validator = validator;
     }
@@ -28,11 +28,11 @@ public class ManagerReviewRequestEndpoint : IEndpoint
             async (
                 HttpContext httpContext,
                 [FromRoute] Guid vacationsRequestId,
-                [FromServices] IFeatureService<ManagerReviewRequest> service,
-                [FromBody] ProcessStatus status,
+                [FromServices] IFeatureService<ManagerReviewRequestInput> service,
+                [FromBody] VactionRequestsStatus status,
                 CancellationToken cancellationToken) =>
             {
-                var input = new ManagerReviewRequest
+                var input = new ManagerReviewRequestInput
                 {
                     ReviewerId = httpContext.GetUserId(),
                     VacationRequestId = vacationsRequestId,

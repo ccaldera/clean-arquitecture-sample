@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ScalableTeams.HumanResourcesManagement.Domain.Entities;
+using ScalableTeams.HumanResourcesManagement.Domain.Departments.Entities;
+using ScalableTeams.HumanResourcesManagement.Domain.Employees.Entities;
+using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Entities;
 using ScalableTeams.HumanResourcesManagement.Persistence.EntityTypeConfigurations;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence;

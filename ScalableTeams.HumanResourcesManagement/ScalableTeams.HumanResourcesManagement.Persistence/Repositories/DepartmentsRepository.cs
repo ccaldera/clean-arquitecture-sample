@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ScalableTeams.HumanResourcesManagement.Domain.Enums;
-using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
+using ScalableTeams.HumanResourcesManagement.Domain.Departments.Enums;
+using ScalableTeams.HumanResourcesManagement.Domain.Departments.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Utilities;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
@@ -14,7 +14,7 @@ public class DepartmentsRepository : IDepartmentsRepository
         this.dbContext = context;
     }
 
-    public async Task<bool> EmployeeBelongsToDepartment(Guid employeeId, Departments department)
+    public async Task<bool> EmployeeBelongsToDepartment(Guid employeeId, DepartmentType department)
     {
         var departmentValue = department.GetDescription();
 

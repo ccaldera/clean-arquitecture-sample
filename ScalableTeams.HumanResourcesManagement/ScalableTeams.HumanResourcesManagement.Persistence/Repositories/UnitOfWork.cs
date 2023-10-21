@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
-using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.Repositories;
+using ScalableTeams.HumanResourcesManagement.Domain.Departments.Repositories;
+using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
+using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Repositories;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 

@@ -1,5 +1,5 @@
 ﻿using FluentValidation.Results;
-using ScalableTeams.HumanResourcesManagement.Domain.ValueObjects.Common;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

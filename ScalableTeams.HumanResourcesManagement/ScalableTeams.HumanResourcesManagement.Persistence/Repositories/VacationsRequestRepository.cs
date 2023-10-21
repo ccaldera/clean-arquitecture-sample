@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ScalableTeams.HumanResourcesManagement.Domain.Agreggates;
-using ScalableTeams.HumanResourcesManagement.Domain.Entities;
-using ScalableTeams.HumanResourcesManagement.Domain.Repositories;
+using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Entities;
+using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Repositories;
+using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.ValueObjects;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 

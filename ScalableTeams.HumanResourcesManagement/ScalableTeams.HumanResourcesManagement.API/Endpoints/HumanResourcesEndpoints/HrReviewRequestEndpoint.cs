@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.API.Security;
-using ScalableTeams.HumanResourcesManagement.Application.Features.HumanResources.Models;
+using ScalableTeams.HumanResourcesManagement.Application.Features.HumanResourcesReviewOpenRequests.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
-using ScalableTeams.HumanResourcesManagement.Domain.Enums;
+using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Enums;
 using System;
 using System.Threading;
 
@@ -15,9 +15,9 @@ namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.HumanResourcesEnd
 
 public class HrReviewRequestEndpoint : IEndpoint
 {
-    private readonly IValidator<HrReviewRequest> validator;
+    private readonly IValidator<HumanResourcesReviewRequestsInput> validator;
 
-    public HrReviewRequestEndpoint(IValidator<HrReviewRequest> validator)
+    public HrReviewRequestEndpoint(IValidator<HumanResourcesReviewRequestsInput> validator)
     {
         this.validator = validator;
     }
@@ -27,11 +27,11 @@ public class HrReviewRequestEndpoint : IEndpoint
             async (
                 HttpContext httpContext,
                 [FromRoute] Guid vacationsRequestId,
-                [FromServices] IFeatureService<HrReviewRequest> service,
-                [FromBody] ProcessStatus status,
+                [FromServices] IFeatureService<HumanResourcesReviewRequestsInput> service,
+                [FromBody] VactionRequestsStatus status,
                 CancellationToken cancellationToken) =>
             {
-                var input = new HrReviewRequest
+                var input = new HumanResourcesReviewRequestsInput
                 {
                     HrEmployeeId = httpContext.GetUserId(),
                     VacationRequestId = vacationsRequestId,
