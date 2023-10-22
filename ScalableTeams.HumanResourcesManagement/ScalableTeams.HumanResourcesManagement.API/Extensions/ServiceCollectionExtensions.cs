@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ScalableTeams.HumanResourcesManagement.API.Configuration;
-using ScalableTeams.HumanResourcesManagement.API.DomainEvents;
 using ScalableTeams.HumanResourcesManagement.API.Endpoints;
 using ScalableTeams.HumanResourcesManagement.API.Security.Services;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;

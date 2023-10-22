@@ -1,11 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ScalableTeams.HumanResourcesManagement.Domain.Common.DomainEvents;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace ScalableTeams.HumanResourcesManagement.API.DomainEvents;
+﻿namespace ScalableTeams.HumanResourcesManagement.Domain.Common.DomainEvents;
 
 public class DomainEventDispatcher : IEventDispatcher
 {
@@ -19,7 +12,8 @@ public class DomainEventDispatcher : IEventDispatcher
     public async Task Dispatch(IDomainEvent @event, CancellationToken cancellationToken)
     {
         Type handlerType = typeof(IDomainEventHandler<>).MakeGenericType(@event.GetType());
-        IEnumerable<object> handlers = _serviceProvider.GetServices(handlerType)!;
+        Type servicesList = typeof(IEnumerable<>).MakeGenericType(handlerType);
+        IEnumerable<object> handlers = (IEnumerable<object>)_serviceProvider.GetService(servicesList)!;
 
         foreach (var handler in handlers)
         {
