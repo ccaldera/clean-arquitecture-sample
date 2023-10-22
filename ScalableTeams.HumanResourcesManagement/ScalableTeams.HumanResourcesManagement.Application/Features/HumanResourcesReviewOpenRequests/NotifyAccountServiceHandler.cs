@@ -4,11 +4,11 @@ using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.DomainEvent
 
 namespace ScalableTeams.HumanResourcesManagement.Application.Features.HumanResourcesReviewOpenRequests;
 
-public class NotifyAccountService : DomainEventHandlerBase<VacationRequestApprovedByHumanResources>
+public class NotifyAccountServiceHandler : DomainEventHandlerBase<VacationRequestApprovedByHumanResources>
 {
     private readonly IAccountingService accountingService;
 
-    public NotifyAccountService(IAccountingService accountingService)
+    public NotifyAccountServiceHandler(IAccountingService accountingService)
     {
         this.accountingService = accountingService;
     }

@@ -205,17 +205,14 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddEventDomains(this IServiceCollection services)
     {
-        var types = AppDomain
+        var domainEvents = AppDomain
             .CurrentDomain
             .GetAssemblies()
             .SelectMany(s => s.GetTypes())
-            .Where(x => !x.IsInterface);
-
-        var domainEvents = types
             .Where(x => x.GetInterfaces().Any(x =>
                 x.IsGenericType &&
-                typeof(IDomainEventHandler<>) == x.GetGenericTypeDefinition() &&
-                !x.IsAbstract));
+                typeof(IDomainEventHandler<>) == x.GetGenericTypeDefinition()))
+            .Where(x => !x.IsAbstract);
 
         foreach (var domainEvent in domainEvents)
         {
