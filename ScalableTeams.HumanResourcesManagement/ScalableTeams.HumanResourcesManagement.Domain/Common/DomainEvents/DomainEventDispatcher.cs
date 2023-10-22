@@ -11,16 +11,15 @@ public class DomainEventDispatcher : IEventDispatcher
 
     public async Task Dispatch(IDomainEvent @event, CancellationToken cancellationToken)
     {
-        Type handlerType = typeof(IDomainEventHandler<>).MakeGenericType(@event.GetType());
-        Type servicesList = typeof(IEnumerable<>).MakeGenericType(handlerType);
-        IEnumerable<object> handlers = (IEnumerable<object>)_serviceProvider.GetService(servicesList)!;
+        var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(@event.GetType());
+        var handlersListType = typeof(IEnumerable<>).MakeGenericType(handlerType);
+        var handlers = (IEnumerable<IDomainEventHandler>)_serviceProvider.GetService(handlersListType)!;
 
         foreach (var handler in handlers)
         {
-            IDomainEventHandler baseHandler = (handler as IDomainEventHandler)!;
-            if (baseHandler != null)
+            if (handler != null)
             {
-                await baseHandler.Handle(@event, cancellationToken);
+                await handler.Handle(@event, cancellationToken);
             }
         }
     }
