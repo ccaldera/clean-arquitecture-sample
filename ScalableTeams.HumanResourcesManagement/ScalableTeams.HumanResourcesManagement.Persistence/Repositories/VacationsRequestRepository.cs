@@ -1,17 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.DomainEvents;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.Entitites;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Entities;
 using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.ValueObjects;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 
-public class VacationsRequestRepository : IVacationsRequestRepository
+public class VacationsRequestRepository : RepositoryBase, IVacationsRequestRepository
 {
     private readonly HumanResourcesManagementContext dbContext;
 
-    public VacationsRequestRepository(HumanResourcesManagementContext context)
+    public VacationsRequestRepository(
+        HumanResourcesManagementContext dbContext,
+        IEventDispatcher eventDispatcher)
+            : base(eventDispatcher)
     {
-        this.dbContext = context;
+        this.dbContext = dbContext;
     }
 
     public async Task<VacationRequest?> Get(Guid id)
@@ -44,7 +50,16 @@ public class VacationsRequestRepository : IVacationsRequestRepository
         await dbContext.AddAsync(vacationRequest);
     }
 
-    public async Task SaveChanges()
+    protected override IEnumerable<IDomainEvent> GetDomainEvents()
+    {
+        return dbContext
+            .ChangeTracker
+            .Entries<Entity>()
+            .Where(x => x is not null)
+            .SelectMany(x => x.Entity.PopDomainEvents());
+    }
+
+    protected override async Task Save()
     {
         await dbContext.SaveChangesAsync();
     }

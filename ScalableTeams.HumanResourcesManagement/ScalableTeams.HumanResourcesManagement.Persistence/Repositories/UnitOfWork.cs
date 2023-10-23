@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.DomainEvents;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.Entitites;
 using ScalableTeams.HumanResourcesManagement.Domain.Common.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Departments.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
@@ -6,60 +8,53 @@ using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Repositorie
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork : UnitOfWorkBase
 {
     private readonly HumanResourcesManagementContext dbContext;
     private IDbContextTransaction? transaction;
-    private IEmployeesRepository? employeesRepository;
-    private IDepartmentsRepository? departmentsRepository;
-    private IVacationsRequestRepository? vacationsRequestRepository;
 
-    public UnitOfWork(HumanResourcesManagementContext dbContext)
+    public UnitOfWork(
+        HumanResourcesManagementContext dbContext,
+        IEventDispatcher eventDispatcher)
+            : base(eventDispatcher)
     {
         this.dbContext = dbContext;
+
+        EmployeesRepository = new EmployeesRepository(dbContext, eventDispatcher);
+        DepartmentsRepository = new DepartmentsRepository(dbContext, eventDispatcher);
+        VacationsRequestRepository = new VacationsRequestRepository(dbContext, eventDispatcher);
     }
 
-    public IEmployeesRepository EmployeesRepository
-    {
-        get
-        {
-            return employeesRepository ??= new EmployeesRepository(dbContext);
-        }
-    }
-
-    public IDepartmentsRepository DepartmentsRepository
-    {
-        get
-        {
-            return departmentsRepository ??= new DepartmentsRepository(dbContext);
-        }
-    }
-
-    public IVacationsRequestRepository VacationsRequestRepository
-    {
-        get
-        {
-            return vacationsRequestRepository ??= new VacationsRequestRepository(dbContext);
-        }
-    }
+    public override IEmployeesRepository EmployeesRepository { get; }
+    public override IDepartmentsRepository DepartmentsRepository { get; }
+    public override IVacationsRequestRepository VacationsRequestRepository { get; }
 
 
-    public async Task BeginTransaction()
+    public override async Task BeginTransaction()
     {
         transaction = await dbContext.Database.BeginTransactionAsync();
     }
 
-    public async Task CommitTransaction()
+    public override async Task CommitTransaction()
     {
         await transaction!.CommitAsync();
     }
 
-    public async Task RollBackTransaction()
+    public override async Task RollBackTransaction()
     {
         await transaction!.RollbackAsync();
     }
 
-    public async Task SaveChanges()
+    protected override IEnumerable<IDomainEvent> GetDomainEvents()
+    {
+        return dbContext
+            .ChangeTracker
+            .Entries<Entity>()
+            .Where(x => x is not null)
+            .SelectMany(x => x.Entity.PopDomainEvents());
+    }
+
+    protected override async Task Save()
     {
         await dbContext.SaveChangesAsync();
     }

@@ -20,7 +20,7 @@ public class VacationRequestTypeConfiguration : IEntityTypeConfiguration<Vacatio
 
         builder.Property(x => x.Status)
             .HasConversion<string>()
-            .HasMaxLength(20)
+            .HasMaxLength(40)
             .IsRequired();
 
         builder.Property(x => x.Dates)

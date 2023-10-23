@@ -1,14 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.DomainEvents;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.Entitites;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Employees.Entities;
 using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 
-public class EmployeesRepository : IEmployeesRepository
+public class EmployeesRepository : RepositoryBase, IEmployeesRepository
 {
     private readonly HumanResourcesManagementContext dbContext;
 
-    public EmployeesRepository(HumanResourcesManagementContext dbContext)
+    public EmployeesRepository(
+        HumanResourcesManagementContext dbContext,
+        IEventDispatcher eventDispatcher)
+            : base(eventDispatcher)
     {
         this.dbContext = dbContext;
     }
@@ -34,5 +40,19 @@ public class EmployeesRepository : IEmployeesRepository
         return await dbContext
             .Employees
             .AnyAsync(x => x.ManagerId == id);
+    }
+
+    protected override IEnumerable<IDomainEvent> GetDomainEvents()
+    {
+        return dbContext
+            .ChangeTracker
+            .Entries<Entity>()
+            .Where(x => x is not null)
+            .SelectMany(x => x.Entity.PopDomainEvents());
+    }
+
+    protected override async Task Save()
+    {
+        await dbContext.SaveChangesAsync();
     }
 }

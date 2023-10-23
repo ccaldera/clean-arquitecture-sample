@@ -13,11 +13,11 @@ public class NotifyManagementHandler : DomainEventHandlerBase<VacationRequestCre
         this.managerNotificationService = managerNotificationService;
     }
 
-    public override async Task Handle(VacationRequestCreated @event, CancellationToken cancellationToken)
+    public override async Task Handle(VacationRequestCreated domainEvent, CancellationToken cancellationToken)
     {
         await managerNotificationService.SendNewVacationRequestNotification(
-            @event.VacationRequest.Employee.ManagerId!.Value,
-            @event.VacationRequest,
+            domainEvent.VacationRequest.Employee.ManagerId!.Value,
+            domainEvent.VacationRequest,
             cancellationToken);
     }
 }

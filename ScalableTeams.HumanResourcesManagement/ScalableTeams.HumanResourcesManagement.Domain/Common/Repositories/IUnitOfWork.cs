@@ -13,5 +13,6 @@ public interface IUnitOfWork
     Task BeginTransaction();
     Task RollBackTransaction();
     Task CommitTransaction();
-    Task SaveChanges();
+
+    Task SaveChanges(CancellationToken cancellationToken);
 }

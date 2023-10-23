@@ -1,10 +1,8 @@
 ﻿using ScalableTeams.HumanResourcesManagement.Application.Features.EmployeeRequestsVacations.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
-using ScalableTeams.HumanResourcesManagement.Domain.Common.DomainEvents;
 using ScalableTeams.HumanResourcesManagement.Domain.Common.ValueObjects;
 using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Exceptions;
-using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.DomainEvents;
 using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Entities;
 using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Repositories;
 
@@ -14,16 +12,13 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput>
 {
     private readonly IEmployeesRepository employeesRepository;
     private readonly IVacationsRequestRepository vacationsRequestRepository;
-    private readonly IEventDispatcher eventDispatcher;
 
     public VacationsRequestService(
         IEmployeesRepository employeesRepository,
-        IVacationsRequestRepository vacationsRequestRepository,
-        IEventDispatcher eventDispatcher)
+        IVacationsRequestRepository vacationsRequestRepository)
     {
         this.employeesRepository = employeesRepository;
         this.vacationsRequestRepository = vacationsRequestRepository;
-        this.eventDispatcher = eventDispatcher;
     }
 
     public async Task Execute(VacationsRequestInput input, CancellationToken cancellationToken)
@@ -40,11 +35,7 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput>
 
         await vacationsRequestRepository.Insert(vacationsRequest);
 
-        await vacationsRequestRepository.SaveChanges();
-
-        var vacationRequestCreatedEvent = new VacationRequestCreated(vacationsRequest);
-
-        await eventDispatcher.Dispatch(vacationRequestCreatedEvent, cancellationToken);
+        await vacationsRequestRepository.SaveChanges(cancellationToken);
     }
 
     private static void ValidateAndThrow(VacationRequest target)

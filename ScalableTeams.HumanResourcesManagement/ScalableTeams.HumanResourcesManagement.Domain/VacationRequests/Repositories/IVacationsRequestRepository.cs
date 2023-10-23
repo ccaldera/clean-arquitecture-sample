@@ -11,6 +11,4 @@ public interface IVacationsRequestRepository : IRepository
     Task<VacationRequest?> Get(Guid id);
 
     IQueryable<VacationsRequestReview> GetAllVacationsRequests();
-
-    Task SaveChanges();
 }

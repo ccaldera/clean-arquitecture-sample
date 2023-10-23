@@ -1,17 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.DomainEvents;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.Entitites;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Departments.Enums;
 using ScalableTeams.HumanResourcesManagement.Domain.Departments.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Utilities;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 
-public class DepartmentsRepository : IDepartmentsRepository
+public class DepartmentsRepository : RepositoryBase, IDepartmentsRepository
 {
     private readonly HumanResourcesManagementContext dbContext;
 
-    public DepartmentsRepository(HumanResourcesManagementContext context)
+    public DepartmentsRepository(
+        HumanResourcesManagementContext dbContext,
+        IEventDispatcher eventDispatcher)
+            : base(eventDispatcher)
     {
-        this.dbContext = context;
+        this.dbContext = dbContext;
     }
 
     public async Task<bool> EmployeeBelongsToDepartment(Guid employeeId, DepartmentType department)
@@ -22,5 +28,19 @@ public class DepartmentsRepository : IDepartmentsRepository
             .AnyAsync(x =>
                 x.Department.Name == departmentValue
                 && x.Id == employeeId);
+    }
+
+    protected override IEnumerable<IDomainEvent> GetDomainEvents()
+    {
+        return dbContext
+            .ChangeTracker
+            .Entries<Entity>()
+            .Where(x => x is not null)
+            .SelectMany(x => x.Entity.PopDomainEvents());
+    }
+
+    protected override async Task Save()
+    {
+        await dbContext.SaveChangesAsync();
     }
 }

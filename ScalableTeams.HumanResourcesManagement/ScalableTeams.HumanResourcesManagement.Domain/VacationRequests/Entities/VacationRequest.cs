@@ -1,9 +1,11 @@
-﻿using ScalableTeams.HumanResourcesManagement.Domain.Employees.Entities;
+﻿using ScalableTeams.HumanResourcesManagement.Domain.Common.Entitites;
+using ScalableTeams.HumanResourcesManagement.Domain.Employees.Entities;
+using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.DomainEvents;
 using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Enums;
 
 namespace ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Entities;
 
-public class VacationRequest
+public class VacationRequest : Entity
 {
     public Guid Id { get; private set; }
     public Guid EmployeeId { get; private set; }
@@ -30,29 +32,39 @@ public class VacationRequest
         EmployeeId = employee.Id;
         Dates = dates;
         Status = VactionRequestsStatus.CreatedByEmployee;
+
+        AddDomianEvent(new VacationRequestCreated(this));
     }
 
     public void ManagerApproves()
     {
         ManagerReviewDate = DateTime.UtcNow;
         Status = VactionRequestsStatus.ApprovedByManager;
+
+        AddDomianEvent(new VacationRequestApprovedByManager(this));
     }
 
     public void ManagerRejects()
     {
         ManagerReviewDate = DateTime.UtcNow;
         Status = VactionRequestsStatus.RejectedByManager;
+
+        AddDomianEvent(new VacationRequestRejected(this));
     }
 
-    public void HrApproves()
+    public void HumanResourcesApprovesRequest()
     {
         HrReviewDate = DateTime.UtcNow;
         Status = VactionRequestsStatus.ApprovedByHumanResources;
+
+        AddDomianEvent(new VacationRequestApprovedByHumanResources(this));
     }
 
-    public void HrRejects()
+    public void HumanResourcesRejectsRequest()
     {
         HrReviewDate = DateTime.UtcNow;
         Status = VactionRequestsStatus.RejectedByHumanResources;
+
+        AddDomianEvent(new VacationRequestRejected(this));
     }
 }

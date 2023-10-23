@@ -1,8 +1,9 @@
-﻿using ScalableTeams.HumanResourcesManagement.Domain.Departments.Entities;
+﻿using ScalableTeams.HumanResourcesManagement.Domain.Common.Entitites;
+using ScalableTeams.HumanResourcesManagement.Domain.Departments.Entities;
 
 namespace ScalableTeams.HumanResourcesManagement.Domain.Employees.Entities;
 
-public class Employee
+public class Employee : Entity
 {
     public required Guid Id { get; init; }
     public required string Name { get; init; }

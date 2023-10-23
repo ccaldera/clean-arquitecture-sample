@@ -166,7 +166,7 @@ public static class ServiceCollectionExtensions
             .GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(t => t.GetInterfaces().Contains(typeof(IRepository)))
-            .Where(t => !t.IsInterface);
+            .Where(t => !t.IsInterface && !t.IsAbstract);
 
         foreach (var repository in repositories)
         {
