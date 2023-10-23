@@ -5,6 +5,7 @@ using ScalableTeams.HumanResourcesManagement.Domain.Common.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Departments.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Repositories;
+using ScalableTeams.HumanResourcesManagement.Persistence.Extensions;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 
@@ -47,11 +48,7 @@ public class UnitOfWork : UnitOfWorkBase
 
     protected override IEnumerable<IDomainEvent> GetDomainEvents()
     {
-        return dbContext
-            .ChangeTracker
-            .Entries<Entity>()
-            .Where(x => x is not null)
-            .SelectMany(x => x.Entity.PopDomainEvents());
+        return dbContext.GetDomainEvents();
     }
 
     protected override async Task Save()

@@ -4,6 +4,7 @@ using ScalableTeams.HumanResourcesManagement.Domain.Common.Entitites;
 using ScalableTeams.HumanResourcesManagement.Domain.Common.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Employees.Entities;
 using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
+using ScalableTeams.HumanResourcesManagement.Persistence.Extensions;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 
@@ -44,11 +45,7 @@ public class EmployeesRepository : RepositoryBase, IEmployeesRepository
 
     protected override IEnumerable<IDomainEvent> GetDomainEvents()
     {
-        return dbContext
-            .ChangeTracker
-            .Entries<Entity>()
-            .Where(x => x is not null)
-            .SelectMany(x => x.Entity.PopDomainEvents());
+        return dbContext.GetDomainEvents();
     }
 
     protected override async Task Save()

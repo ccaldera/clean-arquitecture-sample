@@ -25,7 +25,7 @@ public class VacationRequestTypeConfiguration : IEntityTypeConfiguration<Vacatio
 
         builder.Property(x => x.Dates)
             .HasConversion(
-                v => JsonSerializer.Serialize(v ?? new List<DateTime>(), (JsonSerializerOptions?)null),
-                v => JsonSerializer.Deserialize<List<DateTime>>(v, (JsonSerializerOptions?)null) ?? new List<DateTime>());
+                x => JsonSerializer.Serialize(x ?? new List<DateTime>(), (JsonSerializerOptions?)null),
+                x => JsonSerializer.Deserialize<List<DateTime>>(x, (JsonSerializerOptions?)null) ?? new List<DateTime>());
     }
 }
