@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using ScalableTeams.HumanResourcesManagement.Domain.Common.DomainEvents;
-using ScalableTeams.HumanResourcesManagement.Domain.Common.Entitites;
 using ScalableTeams.HumanResourcesManagement.Domain.Common.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Departments.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
