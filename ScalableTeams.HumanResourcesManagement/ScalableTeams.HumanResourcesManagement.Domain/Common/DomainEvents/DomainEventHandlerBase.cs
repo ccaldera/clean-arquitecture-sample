@@ -10,16 +10,8 @@ public abstract class DomainEventHandlerBase<TEvent> : IDomainEventHandler<TEven
             return Task.CompletedTask;
         }
 
-        try
-        {
-            return Handle(tEvent, cancellationToken);
-        }
-        catch (Exception)
-        {
-        }
-
-        return Task.CompletedTask;
+        return Handle(tEvent, cancellationToken);
     }
 
-    public abstract Task Handle(TEvent @event, CancellationToken cancellationToken);
+    public abstract Task Handle(TEvent domainEvent, CancellationToken cancellationToken);
 }

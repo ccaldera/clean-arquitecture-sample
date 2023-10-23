@@ -9,9 +9,9 @@ public class DomainEventDispatcher : IEventDispatcher
         _serviceProvider = serviceProvider;
     }
 
-    public async Task Dispatch(IDomainEvent @event, CancellationToken cancellationToken)
+    public async Task Dispatch(IDomainEvent domainEvent, CancellationToken cancellationToken)
     {
-        var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(@event.GetType());
+        var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(domainEvent.GetType());
         var handlersListType = typeof(IEnumerable<>).MakeGenericType(handlerType);
         var handlers = (IEnumerable<IDomainEventHandler>)_serviceProvider.GetService(handlersListType)!;
 
@@ -19,7 +19,7 @@ public class DomainEventDispatcher : IEventDispatcher
         {
             if (handler != null)
             {
-                await handler.Handle(@event, cancellationToken);
+                await handler.Handle(domainEvent, cancellationToken);
             }
         }
     }
