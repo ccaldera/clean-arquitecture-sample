@@ -15,14 +15,17 @@ public class UnitOfWork : UnitOfWorkBase
 
     public UnitOfWork(
         HumanResourcesManagementContext dbContext,
+        IEmployeesRepository employeesRepository,
+        IDepartmentsRepository departmentsRepository,
+        IVacationsRequestRepository vacationsRequestRepository,
         IEventDispatcher eventDispatcher)
             : base(eventDispatcher)
     {
         this.dbContext = dbContext;
 
-        EmployeesRepository = new EmployeesRepository(dbContext, eventDispatcher);
-        DepartmentsRepository = new DepartmentsRepository(dbContext, eventDispatcher);
-        VacationsRequestRepository = new VacationsRequestRepository(dbContext, eventDispatcher);
+        EmployeesRepository = employeesRepository;
+        DepartmentsRepository = departmentsRepository;
+        VacationsRequestRepository = vacationsRequestRepository;
     }
 
     public override IEmployeesRepository EmployeesRepository { get; }
