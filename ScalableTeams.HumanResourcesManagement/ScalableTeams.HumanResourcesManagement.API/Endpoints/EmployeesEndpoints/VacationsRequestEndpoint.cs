@@ -14,11 +14,11 @@ namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.EmployeesEndpoint
 
 public class VacationsRequestEndpoint : IEndpoint
 {
-    private readonly IValidator<VacationsRequestInput> validator;
+    private readonly IValidator<VacationsRequestInput> _validator;
 
     public VacationsRequestEndpoint(IValidator<VacationsRequestInput> validator)
     {
-        this.validator = validator;
+        _validator = validator;
     }
 
     public void AddRoute(IEndpointRouteBuilder app)
@@ -36,7 +36,7 @@ public class VacationsRequestEndpoint : IEndpoint
                 Dates = dates
             };
 
-            validator.ValidateAndThrow(input);
+            _validator.ValidateAndThrow(input);
 
             await service.Execute(input, cancellationToken);
 

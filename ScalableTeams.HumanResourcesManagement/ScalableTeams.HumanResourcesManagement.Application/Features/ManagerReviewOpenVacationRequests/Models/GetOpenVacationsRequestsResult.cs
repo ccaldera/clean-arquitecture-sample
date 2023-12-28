@@ -4,5 +4,5 @@ namespace ScalableTeams.HumanResourcesManagement.Application.Features.ManagerRev
 
 public class GetOpenVacationsRequestsResult
 {
-    public List<VacationsRequestReview> Requests { get; set; } = new List<VacationsRequestReview>();
+    public List<VacationsRequestReview> Requests { get; set; } = [];
 }

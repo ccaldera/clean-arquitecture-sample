@@ -10,8 +10,8 @@ namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 
 public class UnitOfWork : UnitOfWorkBase
 {
-    private readonly HumanResourcesManagementContext dbContext;
-    private IDbContextTransaction? transaction;
+    private readonly HumanResourcesManagementContext _dbContext;
+    private IDbContextTransaction? _transaction;
 
     public UnitOfWork(
         HumanResourcesManagementContext dbContext,
@@ -21,7 +21,7 @@ public class UnitOfWork : UnitOfWorkBase
         IEventDispatcher eventDispatcher)
             : base(eventDispatcher)
     {
-        this.dbContext = dbContext;
+        _dbContext = dbContext;
 
         EmployeesRepository = employeesRepository;
         DepartmentsRepository = departmentsRepository;
@@ -35,26 +35,26 @@ public class UnitOfWork : UnitOfWorkBase
 
     public override async Task BeginTransaction()
     {
-        transaction = await dbContext.Database.BeginTransactionAsync();
+        _transaction = await _dbContext.Database.BeginTransactionAsync();
     }
 
     public override async Task CommitTransaction()
     {
-        await transaction!.CommitAsync();
+        await _transaction!.CommitAsync();
     }
 
     public override async Task RollBackTransaction()
     {
-        await transaction!.RollbackAsync();
+        await _transaction!.RollbackAsync();
     }
 
     protected override IEnumerable<IDomainEvent> GetDomainEvents()
     {
-        return dbContext.GetDomainEvents();
+        return _dbContext.GetDomainEvents();
     }
 
     protected override async Task Save()
     {
-        await dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
     }
 }

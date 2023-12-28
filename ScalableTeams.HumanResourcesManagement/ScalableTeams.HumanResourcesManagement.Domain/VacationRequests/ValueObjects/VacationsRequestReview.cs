@@ -12,5 +12,5 @@ public class VacationsRequestReview
     public DateTime? ManagerReviewDate { get; set; }
     public DateTime? HrReviewDate { get; set; }
     public VactionRequestsStatus Status { get; set; }
-    public List<DateTime> Dates { get; set; } = new List<DateTime>();
+    public List<DateTime> Dates { get; set; } = [];
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ScalableTeams.HumanResourcesManagement.API.Security.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using ScalableTeams.HumanResourcesManagement.Domain.Departments.Enums;
+using ScalableTeams.HumanResourcesManagement.Domain.Employees.Entities;
 using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Utilities;
 
@@ -25,11 +26,11 @@ public class GetTokenRequestService : IFeatureService<GetTokenRequest, GetTokenR
 
     public async Task<GetTokenResponse?> Execute(GetTokenRequest input, CancellationToken cancellationToken)
     {
-        var employee = await employeesRepository.GetUserByEmailAndPassword(
+        Employee? employee = await employeesRepository.GetUserByEmailAndPassword(
                     input.Username,
                     input.Password);
 
-        if (employee == null)
+        if (employee is null)
         {
             return null;
         }
@@ -38,12 +39,12 @@ public class GetTokenRequestService : IFeatureService<GetTokenRequest, GetTokenR
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Sid, employee.Id.ToString()),
-            new Claim(ClaimTypes.Name, employee.Id.ToString()),
-            new Claim(ClaimTypes.GivenName, employee.Name),
-            new Claim(ClaimTypes.Surname, employee.LastName),
-            new Claim(ClaimTypes.Email, employee.Email),
-            new Claim(ClaimTypes.Role, employee.Department.Name)
+            new(ClaimTypes.Sid, employee.Id.ToString()),
+            new(ClaimTypes.Name, employee.Id.ToString()),
+            new(ClaimTypes.GivenName, employee.Name),
+            new(ClaimTypes.Surname, employee.LastName),
+            new(ClaimTypes.Email, employee.Email),
+            new(ClaimTypes.Role, employee.Department.Name)
         };
 
         if (employee.Department.Name == DepartmentType.HumanResources.GetDescription())

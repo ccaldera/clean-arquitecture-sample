@@ -17,5 +17,5 @@ public class Employee : Entity
     public Guid? ManagerId { get; set; }
     public Employee? Manager { get; set; }
 
-    public List<Employee> Subordinates { get; set; } = new List<Employee>();
+    public List<Employee> Subordinates { get; set; } = [];
 }

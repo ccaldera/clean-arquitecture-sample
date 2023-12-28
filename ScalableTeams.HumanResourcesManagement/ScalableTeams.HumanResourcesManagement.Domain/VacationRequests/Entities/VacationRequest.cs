@@ -13,7 +13,7 @@ public class VacationRequest : Entity
     public DateTime? ManagerReviewDate { get; private set; }
     public DateTime? HrReviewDate { get; private set; }
     public VactionRequestsStatus Status { get; private set; }
-    public List<DateTime> Dates { get; private set; } = new List<DateTime>();
+    public List<DateTime> Dates { get; private set; } = [];
 
     private VacationRequest()
     {

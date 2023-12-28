@@ -6,15 +6,15 @@ namespace ScalableTeams.HumanResourcesManagement.Application.Features.ManagerRev
 
 public class NotifyEmployeeHandler : DomainEventHandlerBase<VacationRequestApprovedByManager>
 {
-    private readonly IEmployeesNotificationService employeesNotificationService;
+    private readonly IEmployeesNotificationService _employeesNotificationService;
 
     public NotifyEmployeeHandler(IEmployeesNotificationService employeesNotificationService)
     {
-        this.employeesNotificationService = employeesNotificationService;
+        _employeesNotificationService = employeesNotificationService;
     }
 
     public override async Task Handle(VacationRequestApprovedByManager @event, CancellationToken cancellationToken)
     {
-        await employeesNotificationService.SendVacationRequestUpdateNotification(@event.VacationRequest, cancellationToken);
+        await _employeesNotificationService.SendVacationRequestUpdateNotification(@event.VacationRequest, cancellationToken);
     }
 }

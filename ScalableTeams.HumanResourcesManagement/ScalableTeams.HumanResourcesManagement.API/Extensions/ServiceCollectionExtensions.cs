@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -109,14 +110,14 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddEndpoints(this IServiceCollection services)
     {
-        var endpoints = AppDomain
+        IEnumerable<Type> endpoints = AppDomain
             .CurrentDomain
             .GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(t => t.GetInterfaces().Contains(typeof(IEndpoint)))
             .Where(t => !t.IsInterface);
 
-        foreach (var endpoint in endpoints)
+        foreach (Type? endpoint in endpoints)
         {
             services.AddScoped(typeof(IEndpoint), endpoint);
         }
@@ -126,30 +127,30 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddFeatureServices(this IServiceCollection services)
     {
-        var types = AppDomain
+        IEnumerable<Type> types = AppDomain
             .CurrentDomain
             .GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(x => !x.IsInterface);
 
-        var inputOutputRequest = types
+        IEnumerable<Type> inputOutputRequest = types
             .Where(x => x.GetInterfaces().Any(x => x.IsGenericType && typeof(IFeatureService<,>) == x.GetGenericTypeDefinition()));
 
-        foreach (var feature in inputOutputRequest)
+        foreach (Type feature in inputOutputRequest)
         {
-            var @interface = feature
+            Type @interface = feature
                 .GetInterfaces()
                 .First(x => x.IsGenericType && typeof(IFeatureService<,>) == x.GetGenericTypeDefinition());
 
             services.AddScoped(@interface, feature);
         }
 
-        var inputOnlyRequest = types
+        IEnumerable<Type> inputOnlyRequest = types
             .Where(x => x.GetInterfaces().Any(x => x.IsGenericType && typeof(IFeatureService<>) == x.GetGenericTypeDefinition()));
 
-        foreach (var feature in inputOnlyRequest)
+        foreach (Type feature in inputOnlyRequest)
         {
-            var @interface = feature
+            Type @interface = feature
                 .GetInterfaces()
                 .First(x => x.IsGenericType && typeof(IFeatureService<>) == x.GetGenericTypeDefinition());
 
@@ -161,20 +162,20 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        var repositories = AppDomain
+        IEnumerable<Type> types = AppDomain
             .CurrentDomain
             .GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(t => t.GetInterfaces().Contains(typeof(IRepository)))
             .Where(t => !t.IsInterface && !t.IsAbstract);
 
-        foreach (var repository in repositories)
+        foreach (Type type in types)
         {
-            var @interface = repository
+            Type @interface = type
                 .GetInterfaces()
                 .First(x => x != typeof(IRepository) && x.IsAssignableTo(typeof(IRepository)));
 
-            services.AddScoped(@interface, repository);
+            services.AddScoped(@interface, type);
         }
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -184,27 +185,27 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddNotificationsServices(this IServiceCollection services)
     {
-        var repositories = AppDomain
+        IEnumerable<Type> types = AppDomain
             .CurrentDomain
             .GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(t => t.GetInterfaces().Contains(typeof(INotificationService)))
             .Where(t => !t.IsInterface);
 
-        foreach (var repository in repositories)
+        foreach (Type type in types)
         {
-            var @interface = repository
+            Type @interface = type
                 .GetInterfaces()
                 .First(x => x != typeof(INotificationService) && x.IsAssignableTo(typeof(INotificationService)));
 
-            services.AddSingleton(@interface, repository);
+            services.AddSingleton(@interface, type);
         }
         return services;
     }
 
     public static IServiceCollection AddEventDomains(this IServiceCollection services)
     {
-        var domainEvents = AppDomain
+        IEnumerable<Type> domainEvents = AppDomain
             .CurrentDomain
             .GetAssemblies()
             .SelectMany(s => s.GetTypes())
@@ -213,9 +214,9 @@ public static class ServiceCollectionExtensions
                 typeof(IDomainEventHandler<>) == x.GetGenericTypeDefinition()))
             .Where(x => !x.IsAbstract);
 
-        foreach (var domainEvent in domainEvents)
+        foreach (Type domainEvent in domainEvents)
         {
-            var @interface = domainEvent
+            Type @interface = domainEvent
                 .GetInterfaces()
                 .First(x => x.IsGenericType && typeof(IDomainEventHandler<>) == x.GetGenericTypeDefinition());
 

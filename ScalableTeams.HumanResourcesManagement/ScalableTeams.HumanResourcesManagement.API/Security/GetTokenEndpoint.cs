@@ -28,7 +28,7 @@ public class GetTokenEndpoint : IEndpoint
             {
                 validator.ValidateAndThrow(request);
 
-                var response = await service.Execute(request, cancellationToken);
+                GetTokenResponse? response = await service.Execute(request, cancellationToken);
 
                 if (response is null)
                 {

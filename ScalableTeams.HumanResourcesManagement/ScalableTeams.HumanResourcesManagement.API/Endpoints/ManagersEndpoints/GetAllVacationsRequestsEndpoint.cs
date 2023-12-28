@@ -34,7 +34,7 @@ public class GetAllVacationsRequestsEndpoint : IEndpoint
 
             validator.ValidateAndThrow(input);
 
-            var result = await service.Execute(
+            GetOpenVacationsRequestsResult result = await service.Execute(
                 input,
                 cancellationToken);
 

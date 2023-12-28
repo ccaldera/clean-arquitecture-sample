@@ -15,7 +15,7 @@ public class ExceptionHandler
 {
     private readonly RequestDelegate next;
 
-    private static readonly Dictionary<Type, HttpStatusCode> codes = new()
+    private static readonly Dictionary<Type, HttpStatusCode> _codes = new()
     {
         { typeof(ResourceNotFoundException), HttpStatusCode.NotFound },
         { typeof(BusinessLogicException), HttpStatusCode.BadRequest },
@@ -41,7 +41,7 @@ public class ExceptionHandler
         {
             await HandleBusinessLogicExceptionsAsync(httpContext, ex);
         }
-        catch (Exception ex) when (codes.ContainsKey(ex.GetType()))
+        catch (Exception ex) when (_codes.ContainsKey(ex.GetType()))
         {
             await HandleApplicationExceptionsAsync(httpContext, ex);
         }
@@ -65,7 +65,7 @@ public class ExceptionHandler
 
     private static async Task HandleApplicationExceptionsAsync(HttpContext context, Exception ex)
     {
-        HttpStatusCode statusCode = codes.GetValueOrDefault(ex.GetType());
+        HttpStatusCode statusCode = _codes.GetValueOrDefault(ex.GetType());
 
         var response = new ErrorResponse(ex.Message);
         var content = JsonSerializer.Serialize(response);

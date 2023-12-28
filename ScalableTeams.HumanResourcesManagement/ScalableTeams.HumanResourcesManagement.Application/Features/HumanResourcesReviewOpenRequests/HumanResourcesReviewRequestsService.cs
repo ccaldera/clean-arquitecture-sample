@@ -3,6 +3,7 @@ using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using ScalableTeams.HumanResourcesManagement.Domain.Departments.Enums;
 using ScalableTeams.HumanResourcesManagement.Domain.Departments.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Exceptions;
+using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Entities;
 using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Enums;
 using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Repositories;
 
@@ -10,23 +11,23 @@ namespace ScalableTeams.HumanResourcesManagement.Application.Features.HumanResou
 
 public class HumanResourcesReviewRequestsService : IFeatureService<HumanResourcesReviewRequestsInput>
 {
-    private readonly IVacationsRequestRepository vacationsRequestRepository;
-    private readonly IDepartmentsRepository departmentsRepository;
+    private readonly IVacationsRequestRepository _vacationsRequestRepository;
+    private readonly IDepartmentsRepository _departmentsRepository;
 
     public HumanResourcesReviewRequestsService(
         IVacationsRequestRepository vacationsRequestRepository,
         IDepartmentsRepository departmentsRepository)
     {
-        this.vacationsRequestRepository = vacationsRequestRepository;
-        this.departmentsRepository = departmentsRepository;
+        _vacationsRequestRepository = vacationsRequestRepository;
+        _departmentsRepository = departmentsRepository;
     }
 
     public async Task Execute(HumanResourcesReviewRequestsInput input, CancellationToken cancellationToken)
     {
-        var vacationsRequest = await vacationsRequestRepository.Get(input.VacationRequestId)
+        VacationRequest vacationsRequest = await _vacationsRequestRepository.Get(input.VacationRequestId)
             ?? throw new ResourceNotFoundException($"Vacation request with id {input.VacationRequestId} was not found");
 
-        var isHrEmployee = await departmentsRepository.EmployeeBelongsToDepartment(input.HrEmployeeId, DepartmentType.HumanResources);
+        var isHrEmployee = await _departmentsRepository.EmployeeBelongsToDepartment(input.HrEmployeeId, DepartmentType.HumanResources);
 
         if (!isHrEmployee)
         {
@@ -45,6 +46,6 @@ public class HumanResourcesReviewRequestsService : IFeatureService<HumanResource
                 throw new BusinessLogicException("HR employees can only approve or reject requests.");
         }
 
-        await vacationsRequestRepository.SaveChanges(cancellationToken);
+        await _vacationsRequestRepository.SaveChanges(cancellationToken);
     }
 }

@@ -16,11 +16,11 @@ public class AccountingService : IAccountingService
     {
         var requestedUrl = "/http/200/Ok";
 
-        using var httpClient = httpClientFactory.CreateClient(nameof(AccountingService));
+        using HttpClient httpClient = httpClientFactory.CreateClient(nameof(AccountingService));
 
         using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, requestedUrl);
 
-        using var httpResponseMessage = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
+        using HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
 
         if (!httpResponseMessage.IsSuccessStatusCode)
         {

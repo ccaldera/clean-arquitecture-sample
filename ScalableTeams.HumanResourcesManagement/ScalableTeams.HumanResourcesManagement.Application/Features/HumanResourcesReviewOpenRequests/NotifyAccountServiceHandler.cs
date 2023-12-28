@@ -6,15 +6,15 @@ namespace ScalableTeams.HumanResourcesManagement.Application.Features.HumanResou
 
 public class NotifyAccountServiceHandler : DomainEventHandlerBase<VacationRequestApprovedByHumanResources>
 {
-    private readonly IAccountingService accountingService;
+    private readonly IAccountingService _accountingService;
 
     public NotifyAccountServiceHandler(IAccountingService accountingService)
     {
-        this.accountingService = accountingService;
+        _accountingService = accountingService;
     }
 
     public override async Task Handle(VacationRequestApprovedByHumanResources @event, CancellationToken cancellationToken)
     {
-        await accountingService.NotifyVacationsRequest(@event.VacationRequest, cancellationToken);
+        await _accountingService.NotifyVacationsRequest(@event.VacationRequest, cancellationToken);
     }
 }

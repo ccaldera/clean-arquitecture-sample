@@ -22,7 +22,7 @@ public class GetAllHrVacationsRequestsEndpoint : IEndpoint
                 [FromServices] IFeatureService<GetOpenVacationRequestsInput, GetOpenVacationRequestsResult> service,
                 CancellationToken cancellationToken) =>
             {
-                var result = await service.Execute(
+                GetOpenVacationRequestsResult result = await service.Execute(
                     new GetOpenVacationRequestsInput(),
                     cancellationToken);
 

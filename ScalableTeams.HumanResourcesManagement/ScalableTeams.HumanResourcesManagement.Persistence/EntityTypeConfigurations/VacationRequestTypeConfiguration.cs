@@ -23,9 +23,11 @@ public class VacationRequestTypeConfiguration : IEntityTypeConfiguration<Vacatio
             .HasMaxLength(40)
             .IsRequired();
 
+        List<DateTime> emptyDatesList = [];
+
         builder.Property(x => x.Dates)
             .HasConversion(
-                x => JsonSerializer.Serialize(x ?? new List<DateTime>(), (JsonSerializerOptions?)null),
-                x => JsonSerializer.Deserialize<List<DateTime>>(x, (JsonSerializerOptions?)null) ?? new List<DateTime>());
+                x => JsonSerializer.Serialize(x ?? emptyDatesList, (JsonSerializerOptions?)null),
+                x => JsonSerializer.Deserialize<List<DateTime>>(x, (JsonSerializerOptions?)null) ?? emptyDatesList);
     }
 }

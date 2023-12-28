@@ -28,9 +28,9 @@ public abstract class UnitOfWorkBase : IUnitOfWork
     {
         await Save();
 
-        var domainEvents = GetDomainEvents();
+        IEnumerable<IDomainEvent> domainEvents = GetDomainEvents();
 
-        var tasks = domainEvents
+        IEnumerable<Task> tasks = domainEvents
             .Select(x => EventDispatcher.Dispatch(x, cancellationToken));
 
         await Task.WhenAll(tasks);

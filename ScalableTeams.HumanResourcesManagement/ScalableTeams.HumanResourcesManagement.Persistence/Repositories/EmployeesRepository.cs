@@ -9,26 +9,26 @@ namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 
 public class EmployeesRepository : RepositoryBase, IEmployeesRepository
 {
-    private readonly HumanResourcesManagementContext dbContext;
+    private readonly HumanResourcesManagementContext _dbContext;
 
     public EmployeesRepository(
         HumanResourcesManagementContext dbContext,
         IEventDispatcher eventDispatcher)
             : base(eventDispatcher)
     {
-        this.dbContext = dbContext;
+        _dbContext = dbContext;
     }
 
     public async Task<Employee?> Get(Guid id)
     {
-        return await dbContext
+        return await _dbContext
             .Employees
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Employee?> GetUserByEmailAndPassword(string email, string password)
     {
-        return await dbContext
+        return await _dbContext
             .Employees
             .Include(x => x.Department)
             .Where(x => x.Email == email && x.Password == password)
@@ -37,18 +37,18 @@ public class EmployeesRepository : RepositoryBase, IEmployeesRepository
 
     public async Task<bool> IsManager(Guid id)
     {
-        return await dbContext
+        return await _dbContext
             .Employees
             .AnyAsync(x => x.ManagerId == id);
     }
 
     protected override IEnumerable<IDomainEvent> GetDomainEvents()
     {
-        return dbContext.GetDomainEvents();
+        return _dbContext.GetDomainEvents();
     }
 
     protected override async Task Save()
     {
-        await dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
     }
 }
