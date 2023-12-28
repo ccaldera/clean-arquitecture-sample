@@ -10,21 +10,21 @@ namespace ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
 
 public class DepartmentsRepository : RepositoryBase, IDepartmentsRepository
 {
-    private readonly HumanResourcesManagementContext dbContext;
+    private readonly HumanResourcesManagementContext _dbContext;
 
     public DepartmentsRepository(
         HumanResourcesManagementContext dbContext,
         IEventDispatcher eventDispatcher)
             : base(eventDispatcher)
     {
-        this.dbContext = dbContext;
+        _dbContext = dbContext;
     }
 
     public async Task<bool> EmployeeBelongsToDepartment(Guid employeeId, DepartmentType department)
     {
         var departmentValue = department.GetDescription();
 
-        return await dbContext.Employees
+        return await _dbContext.Employees
             .AnyAsync(x =>
                 x.Department.Name == departmentValue
                 && x.Id == employeeId);
@@ -32,11 +32,11 @@ public class DepartmentsRepository : RepositoryBase, IDepartmentsRepository
 
     protected override IEnumerable<IDomainEvent> GetDomainEvents()
     {
-        return dbContext.GetDomainEvents();
+        return _dbContext.GetDomainEvents();
     }
 
     protected override async Task Save()
     {
-        await dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
     }
 }

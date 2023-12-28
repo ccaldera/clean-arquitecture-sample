@@ -15,8 +15,8 @@ public abstract class RepositoryBase : IRepository
     {
         await Save();
 
-        var domainEvents = GetDomainEvents();
-        var tasks = domainEvents
+        IEnumerable<IDomainEvent> domainEvents = GetDomainEvents();
+        IEnumerable<Task> tasks = domainEvents
             .Select(x => EventDispatcher.Dispatch(x, cancellationToken));
 
         await Task.WhenAll(tasks);
