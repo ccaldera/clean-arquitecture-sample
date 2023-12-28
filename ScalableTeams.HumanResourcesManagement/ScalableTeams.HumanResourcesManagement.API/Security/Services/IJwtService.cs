@@ -1,6 +1,6 @@
-﻿using ScalableTeams.HumanResourcesManagement.API.Security.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
+using ScalableTeams.HumanResourcesManagement.API.Security.Models;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Security.Services;
 

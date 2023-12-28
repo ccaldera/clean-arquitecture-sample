@@ -1,12 +1,12 @@
-﻿using ScalableTeams.HumanResourcesManagement.API.Security.Models;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
+using ScalableTeams.HumanResourcesManagement.API.Security.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using ScalableTeams.HumanResourcesManagement.Domain.Departments.Enums;
 using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Utilities;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Security.Services;
 

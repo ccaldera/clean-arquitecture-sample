@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Threading;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Routing;
 using ScalableTeams.HumanResourcesManagement.API.Endpoints;
 using ScalableTeams.HumanResourcesManagement.API.Security.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
-using System.Threading;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Security;
 

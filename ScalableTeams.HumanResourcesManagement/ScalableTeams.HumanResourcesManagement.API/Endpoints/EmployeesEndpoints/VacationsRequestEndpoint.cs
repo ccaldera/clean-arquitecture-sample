@@ -1,4 +1,7 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,9 +9,6 @@ using Microsoft.AspNetCore.Routing;
 using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.Application.Features.EmployeeRequestsVacations.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.EmployeesEndpoints;
 

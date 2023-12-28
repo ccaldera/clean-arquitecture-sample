@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using ScalableTeams.HumanResourcesManagement.API.Configuration;
-using ScalableTeams.HumanResourcesManagement.API.Security.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using ScalableTeams.HumanResourcesManagement.API.Configuration;
+using ScalableTeams.HumanResourcesManagement.API.Security.Models;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Security.Services;
 

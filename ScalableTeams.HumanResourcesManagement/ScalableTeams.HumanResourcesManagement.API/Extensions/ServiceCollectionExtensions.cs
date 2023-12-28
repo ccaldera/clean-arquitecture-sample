@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System;
+using System.Linq;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,9 +16,6 @@ using ScalableTeams.HumanResourcesManagement.Domain.Common.Repositories;
 using ScalableTeams.HumanResourcesManagement.Infrastucture.Services;
 using ScalableTeams.HumanResourcesManagement.Persistence;
 using ScalableTeams.HumanResourcesManagement.Persistence.Repositories;
-using System;
-using System.Linq;
-using System.Text;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Extensions;
 

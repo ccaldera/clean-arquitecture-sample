@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Threading;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,6 @@ using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.API.Security;
 using ScalableTeams.HumanResourcesManagement.Application.Features.ManagerReviewOpenVacationRequests.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
-using System.Threading;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.ManagersEndpoints;
 

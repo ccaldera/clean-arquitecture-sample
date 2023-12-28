@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using ScalableTeams.HumanResourcesManagement.Application.Features.EmployeeRequestsVacations.Models;
-using System;
+﻿using System;
 using System.Linq;
+using FluentValidation;
+using ScalableTeams.HumanResourcesManagement.Application.Features.EmployeeRequestsVacations.Models;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Endpoints.EmployeesEndpoints.Validators;
 

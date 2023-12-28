@@ -1,8 +1,8 @@
-﻿using FluentValidation.Results;
-using ScalableTeams.HumanResourcesManagement.Domain.Common.ValueObjects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidation.Results;
+using ScalableTeams.HumanResourcesManagement.Domain.Common.ValueObjects;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Models;
 

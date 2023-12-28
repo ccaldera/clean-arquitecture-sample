@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Entities;
-using System.Text.Json;
 
 namespace ScalableTeams.HumanResourcesManagement.Persistence.EntityTypeConfigurations;
 

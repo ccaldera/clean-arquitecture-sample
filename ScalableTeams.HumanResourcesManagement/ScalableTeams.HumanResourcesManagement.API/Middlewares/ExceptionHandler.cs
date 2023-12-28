@@ -1,13 +1,13 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Http;
-using ScalableTeams.HumanResourcesManagement.API.Models;
-using ScalableTeams.HumanResourcesManagement.Domain.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Authentication;
 using System.Text.Json;
 using System.Threading.Tasks;
+using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using ScalableTeams.HumanResourcesManagement.API.Models;
+using ScalableTeams.HumanResourcesManagement.Domain.Exceptions;
 
 namespace ScalableTeams.HumanResourcesManagement.API.Middlewares;
 

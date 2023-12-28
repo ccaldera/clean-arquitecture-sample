@@ -4,18 +4,18 @@ namespace ScalableTeams.HumanResourcesManagement.Domain.Common.Entitites;
 
 public abstract class Entity
 {
-    private readonly Queue<IDomainEvent> domainEvents = new();
+    private readonly Queue<IDomainEvent> _domainEvents = new();
 
     protected void AddDomianEvent(IDomainEvent domainEvent)
     {
-        domainEvents.Enqueue(domainEvent);
+        _domainEvents.Enqueue(domainEvent);
     }
 
     public IEnumerable<IDomainEvent> PopDomainEvents()
     {
-        while (domainEvents.Any())
+        while (_domainEvents.Count != 0)
         {
-            yield return domainEvents.Dequeue();
+            yield return _domainEvents.Dequeue();
         }
     }
 }

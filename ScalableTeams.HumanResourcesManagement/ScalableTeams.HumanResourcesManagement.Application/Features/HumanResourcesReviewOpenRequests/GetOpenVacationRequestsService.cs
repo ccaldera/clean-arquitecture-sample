@@ -7,16 +7,16 @@ namespace ScalableTeams.HumanResourcesManagement.Application.Features.HumanResou
 
 public class GetOpenVacationRequestsService : IFeatureService<GetOpenVacationRequestsInput, GetOpenVacationRequestsResult>
 {
-    private readonly IVacationsRequestRepository vacationsRequestRepository;
+    private readonly IVacationsRequestRepository _vacationsRequestRepository;
 
     public GetOpenVacationRequestsService(IVacationsRequestRepository vacationsRequestRepository)
     {
-        this.vacationsRequestRepository = vacationsRequestRepository;
+        _vacationsRequestRepository = vacationsRequestRepository;
     }
 
     public Task<GetOpenVacationRequestsResult> Execute(GetOpenVacationRequestsInput input, CancellationToken cancellationToken)
     {
-        var requests = vacationsRequestRepository
+        var requests = _vacationsRequestRepository
             .GetAllVacationsRequests()
             .Where(x => x.Status == VactionRequestsStatus.ApprovedByManager)
             .ToList();

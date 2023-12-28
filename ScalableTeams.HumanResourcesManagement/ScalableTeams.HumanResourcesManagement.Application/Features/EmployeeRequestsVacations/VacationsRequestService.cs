@@ -1,6 +1,7 @@
 ﻿using ScalableTeams.HumanResourcesManagement.Application.Features.EmployeeRequestsVacations.Models;
 using ScalableTeams.HumanResourcesManagement.Application.Interfaces;
 using ScalableTeams.HumanResourcesManagement.Domain.Common.ValueObjects;
+using ScalableTeams.HumanResourcesManagement.Domain.Employees.Entities;
 using ScalableTeams.HumanResourcesManagement.Domain.Employees.Repositories;
 using ScalableTeams.HumanResourcesManagement.Domain.Exceptions;
 using ScalableTeams.HumanResourcesManagement.Domain.VacationRequests.Entities;
@@ -10,20 +11,20 @@ namespace ScalableTeams.HumanResourcesManagement.Application.Features.EmployeeRe
 
 public class VacationsRequestService : IFeatureService<VacationsRequestInput>
 {
-    private readonly IEmployeesRepository employeesRepository;
-    private readonly IVacationsRequestRepository vacationsRequestRepository;
+    private readonly IEmployeesRepository _employeesRepository;
+    private readonly IVacationsRequestRepository _vacationsRequestRepository;
 
     public VacationsRequestService(
         IEmployeesRepository employeesRepository,
         IVacationsRequestRepository vacationsRequestRepository)
     {
-        this.employeesRepository = employeesRepository;
-        this.vacationsRequestRepository = vacationsRequestRepository;
+        _employeesRepository = employeesRepository;
+        _vacationsRequestRepository = vacationsRequestRepository;
     }
 
     public async Task Execute(VacationsRequestInput input, CancellationToken cancellationToken)
     {
-        var employee = await employeesRepository.Get(input.EmployeeId)
+        Employee employee = await _employeesRepository.Get(input.EmployeeId)
             ?? throw new ResourceNotFoundException($"The requested employee id {input.EmployeeId} does not exists");
 
         _ = employee.ManagerId
@@ -33,9 +34,9 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput>
 
         ValidateAndThrow(vacationsRequest);
 
-        await vacationsRequestRepository.Insert(vacationsRequest);
+        await _vacationsRequestRepository.Insert(vacationsRequest);
 
-        await vacationsRequestRepository.SaveChanges(cancellationToken);
+        await _vacationsRequestRepository.SaveChanges(cancellationToken);
     }
 
     private static void ValidateAndThrow(VacationRequest target)
@@ -47,7 +48,7 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput>
             errors.Add(new BusinessRuleError(nameof(target.EmployeeId), "EmployeeId cannot be empty."));
         }
 
-        if (!target.Dates.Any())
+        if (target.Dates.Count == 0)
         {
             errors.Add(new BusinessRuleError(nameof(target.Dates), "The dates list cannot be empty."));
         }
@@ -72,7 +73,7 @@ public class VacationsRequestService : IFeatureService<VacationsRequestInput>
             errors.Add(new BusinessRuleError(nameof(target.Dates), "There are some duplicated dates in the request."));
         }
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             throw new BusinessLogicExceptions(errors);
         }

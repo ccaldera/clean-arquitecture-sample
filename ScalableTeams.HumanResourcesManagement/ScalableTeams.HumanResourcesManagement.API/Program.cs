@@ -1,6 +1,9 @@
+using System;
+using System.Text.Json.Serialization;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -8,8 +11,6 @@ using ScalableTeams.HumanResourcesManagement.API.Extensions;
 using ScalableTeams.HumanResourcesManagement.API.Hubs;
 using ScalableTeams.HumanResourcesManagement.API.Middlewares;
 using ScalableTeams.HumanResourcesManagement.API.Security;
-using System;
-using System.Text.Json.Serialization;
 
 namespace ScalableTeams.HumanResourcesManagement.API
 {
@@ -17,16 +18,16 @@ namespace ScalableTeams.HumanResourcesManagement.API
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-            var loggerFactory = LoggerFactory.Create(builder => builder
+            ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder
                         .AddConsole()
                         .AddDebug()
                         .SetMinimumLevel(LogLevel.Debug));
 
             // Add services to the container.
-            var configuration = builder.Configuration;
-            var services = builder.Services;
+            ConfigurationManager configuration = builder.Configuration;
+            IServiceCollection services = builder.Services;
 
             services
                 .AddServices(configuration)
@@ -62,7 +63,7 @@ namespace ScalableTeams.HumanResourcesManagement.API
 
             builder.Services.AddControllers();
 
-            var app = builder.Build();
+            WebApplication app = builder.Build();
 
             app.UseRouting();
 
