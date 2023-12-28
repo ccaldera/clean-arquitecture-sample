@@ -12,90 +12,89 @@ using ScalableTeams.HumanResourcesManagement.API.Hubs;
 using ScalableTeams.HumanResourcesManagement.API.Middlewares;
 using ScalableTeams.HumanResourcesManagement.API.Security;
 
-namespace ScalableTeams.HumanResourcesManagement.API
+namespace ScalableTeams.HumanResourcesManagement.API;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+        ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder
+                    .AddConsole()
+                    .AddDebug()
+                    .SetMinimumLevel(LogLevel.Debug));
+
+        // Add services to the container.
+        ConfigurationManager configuration = builder.Configuration;
+        IServiceCollection services = builder.Services;
+
+        services
+            .AddServices(configuration)
+            .AddAuthorization()
+            .AddEndpoints()
+            .AddFeatureServices()
+            .AddRepositories()
+            .AddNotificationsServices()
+            .AddTokenAuthentication(configuration)
+            .AddDatabase(configuration)
+            .AddEventDomains()
+            .AddAccountingService(configuration)
+            .AddAuthentication();
+
+        builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
+        builder.Services.AddSignalR();
+
+        builder
+            .Services
+            .AddAuthorizationBuilder()
+            .AddPolicy(SecurityPolicies.ManagersPolicy, policy => policy.RequireRole(SecurityRoles.ManagerRole))
+            .AddPolicy(SecurityPolicies.HumanResourcesPolicy, policy => policy.RequireRole(SecurityRoles.HumanResourcesRole));
+
+        builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+        builder.Services.ConfigureHttpJsonOptions(opts =>
         {
-            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
 
-            ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder
-                        .AddConsole()
-                        .AddDebug()
-                        .SetMinimumLevel(LogLevel.Debug));
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwagger();
 
-            // Add services to the container.
-            ConfigurationManager configuration = builder.Configuration;
-            IServiceCollection services = builder.Services;
+        builder.Services.AddControllers();
 
-            services
-                .AddServices(configuration)
-                .AddAuthorization()
-                .AddEndpoints()
-                .AddFeatureServices()
-                .AddRepositories()
-                .AddNotificationsServices()
-                .AddTokenAuthentication(configuration)
-                .AddDatabase(configuration)
-                .AddEventDomains()
-                .AddAccountingService(configuration)
-                .AddAuthentication();
+        WebApplication app = builder.Build();
 
-            builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
-            builder.Services.AddSignalR();
+        app.UseRouting();
 
-            builder
-                .Services
-                .AddAuthorizationBuilder()
-                .AddPolicy(SecurityPolicies.ManagersPolicy, policy => policy.RequireRole(SecurityRoles.ManagerRole))
-                .AddPolicy(SecurityPolicies.HumanResourcesPolicy, policy => policy.RequireRole(SecurityRoles.HumanResourcesRole));
-
-            builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-            builder.Services.ConfigureHttpJsonOptions(opts =>
-            {
-                opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            });
-
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwagger();
-
-            builder.Services.AddControllers();
-
-            WebApplication app = builder.Build();
-
-            app.UseRouting();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseMiddleware<ExceptionHandler>();
-
-            app
-                .MapHub<ManagersHub>("/managers")
-                .RequireAuthorization(SecurityPolicies.ManagersPolicy);
-
-            app
-                .MapHub<HumanResourcesHub>("/hr")
-                .RequireAuthorization(SecurityPolicies.HumanResourcesPolicy);
-
-            app
-                .MapHub<HumanResourcesHub>("/employees")
-                .RequireAuthorization();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.MapEndpoints();
-
-            app.Run();
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
+
+        app.UseHttpsRedirection();
+
+        app.UseMiddleware<ExceptionHandler>();
+
+        app
+            .MapHub<ManagersHub>("/managers")
+            .RequireAuthorization(SecurityPolicies.ManagersPolicy);
+
+        app
+            .MapHub<HumanResourcesHub>("/hr")
+            .RequireAuthorization(SecurityPolicies.HumanResourcesPolicy);
+
+        app
+            .MapHub<HumanResourcesHub>("/employees")
+            .RequireAuthorization();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.MapEndpoints();
+
+        app.Run();
     }
 }
